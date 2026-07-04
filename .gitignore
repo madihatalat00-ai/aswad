@@ -1,0 +1,17 @@
+# macOS
+.DS_Store
+
+# Xcode / iOS build artifacts
+ios/build/
+ios/DerivedData/
+**/xcuserdata/
+*.xcuserstate
+*.xcscmblueprint
+*.moved-aside
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Swift Package Manager
+.build/
