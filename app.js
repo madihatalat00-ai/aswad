@@ -30,6 +30,7 @@
   // ---------- State ----------
   var tasks = load();
   var activeFilter = "all";
+  var editingId = null;
   var toastTimer = null;
 
   // ---------- Persistence ----------
@@ -83,6 +84,26 @@
       d.toLocaleDateString([], { month: "short", day: "numeric" }) +
       " " +
       time
+    );
+  }
+
+  function toLocalInputValue(ts) {
+    // Timestamp -> "YYYY-MM-DDTHH:MM" in the user's local time zone.
+    if (!ts) return "";
+    var d = new Date(ts);
+    var pad = function (n) {
+      return String(n).padStart(2, "0");
+    };
+    return (
+      d.getFullYear() +
+      "-" +
+      pad(d.getMonth() + 1) +
+      "-" +
+      pad(d.getDate()) +
+      "T" +
+      pad(d.getHours()) +
+      ":" +
+      pad(d.getMinutes())
     );
   }
 
@@ -163,6 +184,8 @@
   }
 
   function renderTask(task) {
+    if (task.id === editingId) return renderEditForm(task);
+
     var li = document.createElement("li");
     li.className = "task";
     li.dataset.id = task.id;
@@ -255,6 +278,95 @@
     return li;
   }
 
+  function renderEditForm(task) {
+    var li = document.createElement("li");
+    li.className = "task task-edit";
+    li.dataset.id = task.id;
+    li.dataset.priority = task.priority || "medium";
+
+    var form = document.createElement("form");
+    form.className = "edit-form";
+
+    var title = document.createElement("input");
+    title.type = "text";
+    title.className = "edit-title";
+    title.value = task.title;
+    title.maxLength = 200;
+    title.setAttribute("aria-label", "Task title");
+    form.appendChild(title);
+
+    var notes = document.createElement("input");
+    notes.type = "text";
+    notes.className = "edit-notes";
+    notes.value = task.notes || "";
+    notes.maxLength = 500;
+    notes.placeholder = "Notes (optional)";
+    notes.setAttribute("aria-label", "Notes");
+    form.appendChild(notes);
+
+    var row = document.createElement("div");
+    row.className = "edit-row";
+
+    var due = document.createElement("input");
+    due.type = "datetime-local";
+    due.className = "edit-due";
+    due.value = toLocalInputValue(task.due);
+    due.setAttribute("aria-label", "Reminder date and time");
+    row.appendChild(due);
+
+    var prio = document.createElement("select");
+    prio.className = "edit-prio";
+    prio.setAttribute("aria-label", "Priority");
+    ["low", "medium", "high"].forEach(function (p) {
+      var opt = document.createElement("option");
+      opt.value = p;
+      opt.textContent = p.charAt(0).toUpperCase() + p.slice(1);
+      if ((task.priority || "medium") === p) opt.selected = true;
+      prio.appendChild(opt);
+    });
+    row.appendChild(prio);
+
+    form.appendChild(row);
+
+    var actions = document.createElement("div");
+    actions.className = "edit-actions";
+
+    var cancel = document.createElement("button");
+    cancel.type = "button";
+    cancel.className = "btn btn-ghost";
+    cancel.textContent = "Cancel";
+    cancel.addEventListener("click", cancelEdit);
+    actions.appendChild(cancel);
+
+    var saveBtn = document.createElement("button");
+    saveBtn.type = "submit";
+    saveBtn.className = "btn btn-primary";
+    saveBtn.textContent = "Save";
+    actions.appendChild(saveBtn);
+
+    form.appendChild(actions);
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      saveEdit(task.id, {
+        title: title.value,
+        notes: notes.value,
+        priority: prio.value,
+        due: due.value ? new Date(due.value).getTime() : null,
+      });
+    });
+
+    form.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        cancelEdit();
+      }
+    });
+
+    li.appendChild(form);
+    return li;
+  }
+
   function updateCounts() {
     var counts = { all: 0, today: 0, upcoming: 0, overdue: 0, completed: 0 };
     tasks.forEach(function (t) {
@@ -309,17 +421,38 @@
   }
 
   function editTask(id) {
+    if (!find(id)) return;
+    editingId = id;
+    render();
+    var input = els.list.querySelector(".task-edit .edit-title");
+    if (input) {
+      input.focus();
+      input.select();
+    }
+  }
+
+  function saveEdit(id, data) {
     var t = find(id);
     if (!t) return;
-    var next = window.prompt("Edit task", t.title);
-    if (next === null) return;
-    next = next.trim();
-    if (!next) {
+    var title = (data.title || "").trim();
+    if (!title) {
       toast("Title can't be empty");
       return;
     }
-    t.title = next.slice(0, 200);
+    t.title = title.slice(0, 200);
+    t.notes = (data.notes || "").trim().slice(0, 500);
+    t.priority = data.priority || "medium";
+    t.due = data.due || null;
+    // Re-arm the reminder only when the new due time is still in the future.
+    t.notified = t.due && t.due > Date.now() ? false : true;
+    editingId = null;
     save();
+    render();
+    toast("Task updated");
+  }
+
+  function cancelEdit() {
+    editingId = null;
     render();
   }
 

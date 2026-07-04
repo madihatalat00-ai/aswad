@@ -14,7 +14,9 @@ servers, no tracking.
 - **Smart filters** — view **All**, **Today**, **Upcoming**, **Overdue**, or
   **Done** tasks, each with a live count.
 - **Overdue highlighting** so nothing slips through the cracks.
-- **Complete, edit, and delete** tasks; clear all completed at once.
+- **Complete, edit, and delete** tasks — inline editing of every field
+  (title, notes, reminder time, priority), with `Esc` to cancel; clear all
+  completed at once.
 - **Local persistence** via `localStorage` — your tasks are still there when
   you come back.
 - **Light & dark themes** — follows your system preference and remembers your
