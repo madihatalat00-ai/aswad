@@ -3,84 +3,192 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="A simple task reminder app with browser notifications." />
-  <title>Remind Me — Task Reminders</title>
+  <meta name="description" content="Solicitor's Desk — an experienced solicitor's review of your legal draft: proofreading, grammar and punctuation fixes, and suggested grounds of challenge and reliefs. No changes are made without your authorization." />
+  <title>Solicitor's Desk — Legal Draft Review</title>
   <link rel="stylesheet" href="styles.css" />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⏰</text></svg>" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚖️</text></svg>" />
 </head>
 <body>
   <div class="app">
     <header class="app-header">
       <div class="brand">
-        <span class="brand-icon" aria-hidden="true">⏰</span>
+        <span class="brand-icon" aria-hidden="true">⚖️</span>
         <div>
-          <h1>Remind Me</h1>
-          <p class="tagline">Never forget a task again</p>
+          <h1>Solicitor's Desk</h1>
+          <p class="tagline">An experienced solicitor's review of your legal draft</p>
         </div>
       </div>
       <div class="header-actions">
-        <button id="notifToggle" class="btn btn-ghost" type="button" title="Enable browser notifications">
-          <span id="notifIcon">🔕</span>
-          <span id="notifLabel">Notifications off</span>
-        </button>
+        <button id="sampleBtn" class="btn btn-ghost" type="button" title="Load a sample draft to explore the tool">Load sample</button>
         <button id="themeToggle" class="btn btn-ghost" type="button" title="Toggle light/dark theme" aria-label="Toggle theme">🌓</button>
       </div>
     </header>
 
-    <section class="composer" aria-label="Add a new task">
-      <form id="taskForm" autocomplete="off">
-        <div class="composer-main">
-          <input
-            id="titleInput"
-            class="title-input"
-            type="text"
-            placeholder="What do you need to remember?"
-            required
-            maxlength="200"
-            aria-label="Task title"
-          />
-          <button class="btn btn-primary" type="submit">Add</button>
+    <div class="authorization-banner" role="note">
+      <span class="lock" aria-hidden="true">🔒</span>
+      <p>
+        <strong>Your draft is never altered without your authorization.</strong>
+        This tool only <em>suggests</em>. A revised draft is produced solely from the
+        corrections and changes you personally accept.
+      </p>
+    </div>
+
+    <main class="layout">
+      <!-- ============ LEFT: the draft ============ -->
+      <section class="panel editor-panel" aria-label="Your draft">
+        <div class="panel-head">
+          <h2>The draft</h2>
+          <div class="editor-meta">
+            <span id="wordCount" class="chip">0 words</span>
+            <span id="charCount" class="chip">0 characters</span>
+          </div>
         </div>
-        <div class="composer-meta">
-          <label class="field">
-            <span class="field-label">Remind me at</span>
-            <input id="dueInput" type="datetime-local" aria-label="Reminder date and time" />
-          </label>
-          <label class="field">
-            <span class="field-label">Priority</span>
-            <select id="priorityInput" aria-label="Priority">
-              <option value="low">Low</option>
-              <option value="medium" selected>Medium</option>
-              <option value="high">High</option>
+
+        <label class="visually-hidden" for="draftInput">Paste your legal draft</label>
+        <textarea
+          id="draftInput"
+          class="draft-input"
+          placeholder="Paste your petition, application for judicial review, writ petition, affidavit, or other legal draft here…"
+          spellcheck="true"
+        ></textarea>
+
+        <div class="editor-controls">
+          <button id="reviewBtn" class="btn btn-primary" type="button">Review draft</button>
+          <button id="clearBtn" class="btn btn-ghost" type="button">Clear</button>
+          <div class="grow"></div>
+          <label class="budget-mode">
+            Measure change by
+            <select id="budgetMode">
+              <option value="chars">characters</option>
+              <option value="words">words</option>
             </select>
           </label>
-          <label class="field field-grow">
-            <span class="field-label">Notes (optional)</span>
-            <input id="notesInput" type="text" maxlength="500" placeholder="Any details…" aria-label="Notes" />
-          </label>
         </div>
-      </form>
-    </section>
 
-    <nav class="filters" aria-label="Filter tasks">
-      <button class="filter-btn is-active" data-filter="all" type="button">All <span class="count" data-count="all">0</span></button>
-      <button class="filter-btn" data-filter="today" type="button">Today <span class="count" data-count="today">0</span></button>
-      <button class="filter-btn" data-filter="upcoming" type="button">Upcoming <span class="count" data-count="upcoming">0</span></button>
-      <button class="filter-btn" data-filter="overdue" type="button">Overdue <span class="count" data-count="overdue">0</span></button>
-      <button class="filter-btn" data-filter="completed" type="button">Done <span class="count" data-count="completed">0</span></button>
-    </nav>
+        <p class="disclaimer">
+          This tool assists a qualified solicitor's review workflow. It is not a
+          substitute for professional legal advice and does not create a
+          solicitor–client relationship. All content stays in your browser.
+        </p>
+      </section>
 
-    <main>
-      <ul id="taskList" class="task-list" aria-live="polite"></ul>
-      <div id="emptyState" class="empty-state" hidden>
-        <span class="empty-icon" aria-hidden="true">🌿</span>
-        <p id="emptyText">Nothing here yet. Add your first task above.</p>
-      </div>
+      <!-- ============ RIGHT: the review ============ -->
+      <section class="panel review-panel" aria-label="Solicitor's review">
+        <nav class="tabs" role="tablist" aria-label="Review sections">
+          <button class="tab is-active" role="tab" data-tab="proof" id="tab-proof" aria-selected="true">
+            Proofreading <span class="tab-count" id="count-proof">0</span>
+          </button>
+          <button class="tab" role="tab" data-tab="grounds" id="tab-grounds" aria-selected="false">
+            Grounds <span class="tab-count" id="count-grounds">0</span>
+          </button>
+          <button class="tab" role="tab" data-tab="reliefs" id="tab-reliefs" aria-selected="false">
+            Reliefs <span class="tab-count" id="count-reliefs">0</span>
+          </button>
+          <button class="tab" role="tab" data-tab="report" id="tab-report" aria-selected="false">
+            Report
+          </button>
+        </nav>
+
+        <!-- Empty state before a review is run -->
+        <div id="reviewEmpty" class="review-empty">
+          <div class="review-empty-icon" aria-hidden="true">📝</div>
+          <h3>Ready when you are</h3>
+          <p>
+            Paste a draft on the left and press <strong>Review draft</strong>.
+            I will proof-read it, flag grammatical and punctuation errors, and
+            suggest new grounds of challenge and reliefs — without changing a
+            word until you say so.
+          </p>
+        </div>
+
+        <!-- ---------- Proofreading tab ---------- -->
+        <div class="tab-pane" data-pane="proof" hidden>
+          <div class="budget-card" id="budgetCard">
+            <div class="budget-head">
+              <h3>Change budget</h3>
+              <span class="budget-figure"><span id="budgetPct">0.0</span>% of <span id="budgetCapLabel">20</span>%</span>
+            </div>
+            <div class="budget-bar" role="progressbar" aria-valuemin="0" aria-valuemax="20" aria-valuenow="0">
+              <div class="budget-fill" id="budgetFill"></div>
+              <div class="budget-cap-marker" title="20% ceiling"></div>
+            </div>
+            <p class="budget-note">
+              Per your rider, <strong>stylistic</strong> grammar &amp; punctuation
+              changes you accept are capped at <strong>20%</strong> of the draft.
+              Corrections of genuine grammatical and punctuation <strong>errors</strong>
+              are always permitted and do <em>not</em> count against this budget.
+            </p>
+          </div>
+
+          <div class="filter-row" id="proofFilters">
+            <button class="pill is-active" data-filter="all" type="button">All</button>
+            <button class="pill" data-filter="grammar" type="button">Grammar errors</button>
+            <button class="pill" data-filter="punctuation" type="button">Punctuation</button>
+            <button class="pill" data-filter="style" type="button">Style</button>
+          </div>
+
+          <div class="bulk-row">
+            <button id="acceptAllErrors" class="btn btn-small" type="button">Accept all error fixes</button>
+            <button id="resetDecisions" class="btn btn-small btn-ghost" type="button">Reset my decisions</button>
+          </div>
+
+          <ul id="findingsList" class="findings"></ul>
+          <p id="proofNone" class="none-note" hidden>No proofreading issues found — the draft reads cleanly.</p>
+        </div>
+
+        <!-- ---------- Grounds tab ---------- -->
+        <div class="tab-pane" data-pane="grounds" hidden>
+          <div class="section-intro">
+            <h3>Grounds of challenge</h3>
+            <p>Detected in your draft, refinements to strengthen them, and additional grounds worth considering. All are suggestions.</p>
+          </div>
+          <div class="subsection">
+            <h4>Present in the draft <span class="subcount" id="groundsPresentCount">0</span></h4>
+            <ul id="groundsPresent" class="kb-list"></ul>
+            <p id="groundsPresentNone" class="none-note" hidden>No standard grounds were detected — consider the suggestions below.</p>
+          </div>
+          <div class="subsection">
+            <h4>Suggested new grounds <span class="subcount" id="groundsNewCount">0</span></h4>
+            <ul id="groundsNew" class="kb-list"></ul>
+          </div>
+        </div>
+
+        <!-- ---------- Reliefs tab ---------- -->
+        <div class="tab-pane" data-pane="reliefs" hidden>
+          <div class="section-intro">
+            <h3>Reliefs sought</h3>
+            <p>Reliefs already prayed for, refinements to them, and further reliefs you may wish to add to the prayer.</p>
+          </div>
+          <div class="subsection">
+            <h4>Present in the draft <span class="subcount" id="reliefsPresentCount">0</span></h4>
+            <ul id="reliefsPresent" class="kb-list"></ul>
+            <p id="reliefsPresentNone" class="none-note" hidden>No standard reliefs were detected — consider the suggestions below.</p>
+          </div>
+          <div class="subsection">
+            <h4>Suggested new reliefs <span class="subcount" id="reliefsNewCount">0</span></h4>
+            <ul id="reliefsNew" class="kb-list"></ul>
+          </div>
+        </div>
+
+        <!-- ---------- Report tab ---------- -->
+        <div class="tab-pane" data-pane="report" hidden>
+          <div class="section-intro">
+            <h3>Solicitor's report</h3>
+            <p>A consolidated note of the review and a revised draft built only from the changes you authorized.</p>
+          </div>
+          <div class="report-actions">
+            <button id="copyReport" class="btn btn-small" type="button">Copy report</button>
+            <button id="downloadReport" class="btn btn-small" type="button">Download report (.md)</button>
+            <button id="copyRevised" class="btn btn-small" type="button">Copy revised draft</button>
+            <button id="downloadRevised" class="btn btn-small" type="button">Download revised draft (.txt)</button>
+          </div>
+          <div class="report-body" id="reportBody"></div>
+        </div>
+      </section>
     </main>
 
     <footer class="app-footer">
-      <span id="statusLine">0 tasks</span>
-      <button id="clearCompleted" class="btn btn-link" type="button" hidden>Clear completed</button>
+      <p>Solicitor's Desk · runs entirely in your browser · no data leaves your device</p>
     </footer>
   </div>
 

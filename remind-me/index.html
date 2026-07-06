@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="A simple task reminder app with browser notifications." />
+  <title>Remind Me — Task Reminders</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⏰</text></svg>" />
+</head>
+<body>
+  <div class="app">
+    <header class="app-header">
+      <div class="brand">
+        <span class="brand-icon" aria-hidden="true">⏰</span>
+        <div>
+          <h1>Remind Me</h1>
+          <p class="tagline">Never forget a task again</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button id="notifToggle" class="btn btn-ghost" type="button" title="Enable browser notifications">
+          <span id="notifIcon">🔕</span>
+          <span id="notifLabel">Notifications off</span>
+        </button>
+        <button id="themeToggle" class="btn btn-ghost" type="button" title="Toggle light/dark theme" aria-label="Toggle theme">🌓</button>
+      </div>
+    </header>
+
+    <section class="composer" aria-label="Add a new task">
+      <form id="taskForm" autocomplete="off">
+        <div class="composer-main">
+          <input
+            id="titleInput"
+            class="title-input"
+            type="text"
+            placeholder="What do you need to remember?"
+            required
+            maxlength="200"
+            aria-label="Task title"
+          />
+          <button class="btn btn-primary" type="submit">Add</button>
+        </div>
+        <div class="composer-meta">
+          <label class="field">
+            <span class="field-label">Remind me at</span>
+            <input id="dueInput" type="datetime-local" aria-label="Reminder date and time" />
+          </label>
+          <label class="field">
+            <span class="field-label">Priority</span>
+            <select id="priorityInput" aria-label="Priority">
+              <option value="low">Low</option>
+              <option value="medium" selected>Medium</option>
+              <option value="high">High</option>
+            </select>
+          </label>
+          <label class="field field-grow">
+            <span class="field-label">Notes (optional)</span>
+            <input id="notesInput" type="text" maxlength="500" placeholder="Any details…" aria-label="Notes" />
+          </label>
+        </div>
+      </form>
+    </section>
+
+    <nav class="filters" aria-label="Filter tasks">
+      <button class="filter-btn is-active" data-filter="all" type="button">All <span class="count" data-count="all">0</span></button>
+      <button class="filter-btn" data-filter="today" type="button">Today <span class="count" data-count="today">0</span></button>
+      <button class="filter-btn" data-filter="upcoming" type="button">Upcoming <span class="count" data-count="upcoming">0</span></button>
+      <button class="filter-btn" data-filter="overdue" type="button">Overdue <span class="count" data-count="overdue">0</span></button>
+      <button class="filter-btn" data-filter="completed" type="button">Done <span class="count" data-count="completed">0</span></button>
+    </nav>
+
+    <main>
+      <ul id="taskList" class="task-list" aria-live="polite"></ul>
+      <div id="emptyState" class="empty-state" hidden>
+        <span class="empty-icon" aria-hidden="true">🌿</span>
+        <p id="emptyText">Nothing here yet. Add your first task above.</p>
+      </div>
+    </main>
+
+    <footer class="app-footer">
+      <span id="statusLine">0 tasks</span>
+      <button id="clearCompleted" class="btn btn-link" type="button" hidden>Clear completed</button>
+    </footer>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
