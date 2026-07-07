@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Petition Drafter</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="app-header">
+      <div class="brand">
+        <h1>⚖️ Petition Drafter</h1>
+        <p class="tagline">Draft, preview, and export petitions — right in your browser.</p>
+      </div>
+      <div class="header-actions">
+        <select id="draftSelect" class="draft-select" aria-label="Open a saved draft"></select>
+        <button id="newDraft" class="btn" type="button" title="Start a new draft">＋ New</button>
+        <button id="deleteDraft" class="btn btn-danger-ghost" type="button" title="Delete this draft">Delete</button>
+        <button id="themeToggle" class="btn btn-icon" type="button" aria-label="Toggle theme">🌙</button>
+      </div>
+    </header>
+
+    <div class="workspace">
+      <!-- ============ Editor ============ -->
+      <form id="editor" class="editor" autocomplete="off">
+        <section class="card">
+          <h2>Petition type</h2>
+          <div class="field">
+            <label for="typeInput">Template</label>
+            <select id="typeInput">
+              <option value="court">Civil / General Court Petition</option>
+              <option value="writ">Writ Petition</option>
+              <option value="bail">Bail Application</option>
+              <option value="public">Public Petition (to an authority)</option>
+            </select>
+            <p class="hint" id="typeHint"></p>
+          </div>
+        </section>
+
+        <section class="card" id="forumCourt">
+          <h2>Court &amp; case</h2>
+          <div class="field">
+            <label for="courtInput">Court name</label>
+            <input id="courtInput" type="text" placeholder="e.g. the High Court of ______" />
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="locationInput">Seat / location</label>
+              <input id="locationInput" type="text" placeholder="e.g. Karachi" />
+            </div>
+            <div class="field">
+              <label for="caseNoInput">Case / petition no. <span class="opt">(optional)</span></label>
+              <input id="caseNoInput" type="text" placeholder="e.g. W.P. No. ___ of 2026" />
+            </div>
+          </div>
+          <div class="field">
+            <label for="provisionInput">Filed under (provision of law)</label>
+            <input id="provisionInput" type="text" placeholder="e.g. Article ___ of the Constitution" />
+          </div>
+        </section>
+
+        <section class="card" id="forumPublic" hidden>
+          <h2>Addressed to</h2>
+          <div class="field">
+            <label for="authorityInput">Authority / addressee</label>
+            <textarea id="authorityInput" rows="3" placeholder="e.g. The Chairman,&#10;District Municipal Committee,&#10;City"></textarea>
+          </div>
+        </section>
+
+        <section class="card" id="partiesCard">
+          <h2>Parties</h2>
+          <div class="field">
+            <label>Petitioner(s) / Applicant(s)</label>
+            <div id="petitionerList" class="party-list"></div>
+            <button type="button" class="btn btn-add" data-add="petitioners">＋ Add petitioner</button>
+          </div>
+          <div class="field">
+            <label>Respondent(s)</label>
+            <div id="respondentList" class="party-list"></div>
+            <button type="button" class="btn btn-add" data-add="respondents">＋ Add respondent</button>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>Subject</h2>
+          <div class="field">
+            <label for="subjectInput">What is the petition for?</label>
+            <input id="subjectInput" type="text" placeholder="e.g. restoration of the public park at ______" />
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>Facts</h2>
+          <p class="hint">Each entry becomes a numbered paragraph.</p>
+          <div id="factsList" class="item-list"></div>
+          <button type="button" class="btn btn-add" data-add="facts">＋ Add fact</button>
+        </section>
+
+        <section class="card">
+          <h2>Grounds</h2>
+          <p class="hint">Each entry becomes a lettered ground (A, B, C …).</p>
+          <div id="groundsList" class="item-list"></div>
+          <button type="button" class="btn btn-add" data-add="grounds">＋ Add ground</button>
+        </section>
+
+        <section class="card">
+          <h2>Prayer / relief sought</h2>
+          <p class="hint">Each entry becomes a numbered prayer clause (i, ii, iii …).</p>
+          <div id="prayersList" class="item-list"></div>
+          <button type="button" class="btn btn-add" data-add="prayers">＋ Add prayer</button>
+        </section>
+
+        <section class="card">
+          <h2>Signature &amp; verification</h2>
+          <div class="field-row">
+            <div class="field">
+              <label for="placeInput">Place</label>
+              <input id="placeInput" type="text" placeholder="e.g. Lahore" />
+            </div>
+            <div class="field">
+              <label for="dateInput">Date</label>
+              <input id="dateInput" type="text" placeholder="e.g. 7 July 2026" />
+            </div>
+          </div>
+          <div class="field" id="counselField">
+            <label for="counselInput">Counsel / filed by <span class="opt">(optional)</span></label>
+            <input id="counselInput" type="text" placeholder="e.g. A. B. Advocate" />
+          </div>
+          <div class="field checkbox-field" id="verificationField">
+            <label><input id="verificationInput" type="checkbox" checked /> Include verification clause</label>
+          </div>
+          <div class="field" id="deponentField">
+            <label for="deponentInput">Deponent (who verifies)</label>
+            <input id="deponentInput" type="text" placeholder="e.g. the Petitioner No. 1" />
+          </div>
+          <div class="field" id="signatoryRowsField" hidden>
+            <label for="signatoryRowsInput">Blank signature rows (for a public petition)</label>
+            <input id="signatoryRowsInput" type="number" min="0" max="50" value="10" />
+          </div>
+        </section>
+      </form>
+
+      <!-- ============ Preview ============ -->
+      <div class="preview-pane">
+        <div class="preview-toolbar">
+          <span class="preview-title">Live preview</span>
+          <span class="save-status" id="saveStatus" aria-live="polite"></span>
+          <div class="preview-actions">
+            <button id="copyBtn" class="btn" type="button" title="Copy petition text">Copy</button>
+            <button id="downloadBtn" class="btn" type="button" title="Download as .txt">Download</button>
+            <button id="printBtn" class="btn btn-primary" type="button" title="Print or save as PDF">Print / PDF</button>
+          </div>
+        </div>
+        <div id="preview" class="preview document"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <script src="app.js"></script>
+</body>
+</html>
