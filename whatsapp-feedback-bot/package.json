@@ -1,0 +1,17 @@
+{
+  "name": "ruposh-whatsapp-feedback-bot",
+  "version": "1.0.0",
+  "description": "WhatsApp bot that automatically collects product feedback from Ru Posh customers after purchase",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "smoke-test": "node scripts/smoke-test.js",
+    "send-test": "node scripts/send-test.js"
+  },
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
