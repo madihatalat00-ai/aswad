@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mic Doctor — Speakerphone Diagnostic</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎙️</text></svg>" />
+<style>
+  :root {
+    --bg: #f4f5f7; --card: #ffffff; --text: #1a1d21; --muted: #5f6672;
+    --line: #e2e5ea; --accent: #2f6fed; --accent-soft: #e8effd;
+    --ok: #1a9950; --warn: #c77d00; --bad: #d4383e;
+    --meter-bg: #e9ebef;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #14161a; --card: #1e2126; --text: #eceef1; --muted: #9aa2ad;
+      --line: #2c3038; --accent: #5b8ff5; --accent-soft: #22304a;
+      --ok: #3fc477; --warn: #e8a33d; --bad: #ef6a6e;
+      --meter-bg: #2a2e35;
+    }
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.5;
+    padding: 16px; max-width: 640px; margin: 0 auto;
+  }
+  h1 { font-size: 1.35rem; margin-bottom: 4px; }
+  .sub { color: var(--muted); font-size: 0.9rem; margin-bottom: 16px; }
+  .card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+    padding: 16px; margin-bottom: 14px;
+  }
+  .card h2 { font-size: 1.02rem; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+  .badge {
+    font-size: 0.72rem; font-weight: 600; padding: 2px 8px; border-radius: 999px;
+    background: var(--accent-soft); color: var(--accent); white-space: nowrap;
+  }
+  .desc { color: var(--muted); font-size: 0.88rem; margin-bottom: 12px; }
+  .desc b { color: var(--text); }
+  button {
+    font: inherit; font-weight: 600; border: none; border-radius: 10px;
+    padding: 10px 16px; cursor: pointer; touch-action: manipulation;
+  }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:disabled { opacity: 0.5; cursor: default; }
+  .btn-ghost { background: transparent; color: var(--accent); border: 1px solid var(--line); }
+  .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .meter-wrap { margin: 12px 0 6px; }
+  .meter {
+    height: 18px; background: var(--meter-bg); border-radius: 9px; overflow: hidden;
+    position: relative;
+  }
+  .meter-fill {
+    height: 100%; width: 0%; border-radius: 9px;
+    background: linear-gradient(90deg, var(--ok), #d9c22a 70%, var(--bad));
+    transition: width 60ms linear;
+  }
+  .meter-label { font-size: 0.78rem; color: var(--muted); margin-top: 4px; display: flex; justify-content: space-between; }
+  .stats { font-size: 0.82rem; color: var(--muted); margin-top: 6px; font-variant-numeric: tabular-nums; }
+  .stats b { color: var(--text); }
+  audio { width: 100%; margin-top: 10px; }
+  .verdict-q { margin-top: 12px; font-size: 0.9rem; font-weight: 600; }
+  .choices { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+  .choices button {
+    flex: 1; min-width: 90px; padding: 9px 6px; font-size: 0.85rem;
+    background: transparent; border: 1.5px solid var(--line); color: var(--text);
+  }
+  .choices button.sel-pass { border-color: var(--ok); color: var(--ok); background: color-mix(in srgb, var(--ok) 10%, transparent); }
+  .choices button.sel-weak { border-color: var(--warn); color: var(--warn); background: color-mix(in srgb, var(--warn) 10%, transparent); }
+  .choices button.sel-fail { border-color: var(--bad); color: var(--bad); background: color-mix(in srgb, var(--bad) 10%, transparent); }
+  select {
+    font: inherit; padding: 8px 10px; border-radius: 10px; border: 1px solid var(--line);
+    background: var(--card); color: var(--text); max-width: 100%; width: 100%;
+  }
+  .status { font-size: 0.85rem; margin-top: 8px; min-height: 1.2em; }
+  .status.err { color: var(--bad); }
+  .status.ok { color: var(--ok); }
+  #verdict { display: none; }
+  #verdict.show { display: block; border-width: 2px; }
+  #verdict.v-hw { border-color: var(--bad); }
+  #verdict.v-sw { border-color: var(--warn); }
+  #verdict.v-ok { border-color: var(--ok); }
+  .verdict-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
+  .verdict-body { font-size: 0.9rem; }
+  .verdict-body ul { padding-left: 20px; margin-top: 6px; }
+  .verdict-body li { margin-bottom: 4px; }
+  .note { font-size: 0.78rem; color: var(--muted); margin-top: 14px; }
+  .countdown { font-weight: 700; color: var(--accent); }
+</style>
+</head>
+<body>
+
+<h1>🎙️ Mic Doctor</h1>
+<p class="sub">Diagnoses whether your speakerphone voice problem is <b>software</b> or <b>hardware</b>. Run the four tests in order, answer each question, and you'll get a verdict at the end. Use your normal speaking voice, no headphones connected.</p>
+
+<div class="card" id="setupCard">
+  <h2>Setup <span class="badge">Step 0</span></h2>
+  <p class="desc">Tap the button and <b>allow microphone access</b> when your phone asks. If your phone lists more than one microphone, you can switch between them for any test.</p>
+  <div class="row">
+    <button class="btn-primary" id="btnPermission">Enable microphone</button>
+  </div>
+  <div style="margin-top:10px">
+    <select id="micSelect" disabled><option>Microphone list appears after permission…</option></select>
+  </div>
+  <div class="status" id="setupStatus"></div>
+</div>
+
+<div class="card" data-test="A">
+  <h2>Test A — Normal call mic <span class="badge">processing ON</span></h2>
+  <p class="desc">Records 6 seconds with the phone's voice processing enabled — closest to a <b>normal call</b>. Hold the phone like you're on speakerphone (flat, ~30&nbsp;cm from your mouth) and count out loud from 1 to 10.</p>
+  <div class="row">
+    <button class="btn-primary" data-action="record">● Record 6s</button>
+  </div>
+  <div class="meter-wrap">
+    <div class="meter"><div class="meter-fill"></div></div>
+    <div class="meter-label"><span>live level</span><span class="timer"></span></div>
+  </div>
+  <div class="stats"></div>
+  <audio controls hidden></audio>
+  <div class="status"></div>
+  <div class="verdict-q" hidden>Play it back. Can you hear your voice clearly?</div>
+  <div class="choices" hidden>
+    <button data-answer="pass">✅ Clear</button>
+    <button data-answer="weak">😐 Faint/muffled</button>
+    <button data-answer="fail">❌ Silent</button>
+  </div>
+</div>
+
+<div class="card" data-test="B">
+  <h2>Test B — Raw microphone <span class="badge">processing OFF</span></h2>
+  <p class="desc">Same recording but with <b>all software audio processing disabled</b> (echo cancellation, noise suppression, auto gain). If Test A was bad but this one is clear, software processing is eating your voice.</p>
+  <div class="row">
+    <button class="btn-primary" data-action="record">● Record 6s</button>
+  </div>
+  <div class="meter-wrap">
+    <div class="meter"><div class="meter-fill"></div></div>
+    <div class="meter-label"><span>live level</span><span class="timer"></span></div>
+  </div>
+  <div class="stats"></div>
+  <audio controls hidden></audio>
+  <div class="status"></div>
+  <div class="verdict-q" hidden>Play it back. Can you hear your voice clearly?</div>
+  <div class="choices" hidden>
+    <button data-answer="pass">✅ Clear</button>
+    <button data-answer="weak">😐 Faint/muffled</button>
+    <button data-answer="fail">❌ Silent</button>
+  </div>
+</div>
+
+<div class="card" data-test="C">
+  <h2>Test C — Speakerphone simulation <span class="badge">key test</span></h2>
+  <p class="desc"><b>This reproduces your exact problem.</b> The app plays a tone out of your <b>loudspeaker</b> while recording you. Turn your media volume up first. Speak over the tone, counting 1 to 10. If your voice vanishes from this recording, we've reproduced the fault outside the phone call app.</p>
+  <div class="row">
+    <button class="btn-primary" data-action="record">● Record 8s with speaker on</button>
+  </div>
+  <div class="meter-wrap">
+    <div class="meter"><div class="meter-fill"></div></div>
+    <div class="meter-label"><span>live level</span><span class="timer"></span></div>
+  </div>
+  <div class="stats"></div>
+  <audio controls hidden></audio>
+  <div class="status"></div>
+  <div class="verdict-q" hidden>Play it back. Can you hear <b>your voice</b> (not just the tone)?</div>
+  <div class="choices" hidden>
+    <button data-answer="pass">✅ Voice clear</button>
+    <button data-answer="weak">😐 Voice faint</button>
+    <button data-answer="fail">❌ Voice gone</button>
+  </div>
+</div>
+
+<div class="card" data-test="D">
+  <h2>Test D — Top vs bottom mic <span class="badge">hardware check</span></h2>
+  <p class="desc">Most phones use the <b>bottom mic</b> for normal calls and the <b>top/rear mic</b> for speakerphone. Start the live meter, then gently <b>scratch next to the bottom mic hole</b> (bottom edge, near the charging port) and watch the meter jump. Then scratch <b>next to the top mic hole</b> (top edge / near the rear camera). A mic hole that produces no meter response is blocked or dead.</p>
+  <div class="row">
+    <button class="btn-primary" data-action="meter">Start live meter (15s)</button>
+  </div>
+  <div class="meter-wrap">
+    <div class="meter"><div class="meter-fill"></div></div>
+    <div class="meter-label"><span>live level</span><span class="timer"></span></div>
+  </div>
+  <div class="stats"></div>
+  <div class="status"></div>
+  <div class="verdict-q" hidden>Did the meter respond strongly at <b>both</b> mic locations?</div>
+  <div class="choices" hidden>
+    <button data-answer="pass">✅ Both responded</button>
+    <button data-answer="weak">😐 One was weaker</button>
+    <button data-answer="fail">❌ One was dead</button>
+  </div>
+</div>
+
+<div class="card" id="verdict">
+  <div class="verdict-title"></div>
+  <div class="verdict-body"></div>
+</div>
+
+<p class="note">Privacy: everything runs locally in your browser. Recordings never leave your phone and are discarded when you close the page.<br><br>
+Note: a browser can't use the phone's actual <i>call</i> audio path, so this tests the microphones and audio processing generally. If everything passes here but calls still fail, that itself is a strong clue — see the verdict.</p>
+
+<script>
+(() => {
+  "use strict";
+
+  const $ = (sel, root = document) => root.querySelector(sel);
+  const answers = { A: null, B: null, C: null, D: null };
+  let currentDeviceId = null;
+  let audioCtx = null;
+
+  const setupStatus = $("#setupStatus");
+  const micSelect = $("#micSelect");
+
+  const supported = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
+  if (!supported) {
+    setupStatus.textContent = "This browser does not support microphone access. Open this page in Safari (iPhone) or Chrome (Android) over HTTPS.";
+    setupStatus.className = "status err";
+  }
+  if (!window.isSecureContext) {
+    setupStatus.textContent = "Microphone access requires HTTPS. Open this page from a secure (https://) address.";
+    setupStatus.className = "status err";
+  }
+
+  function getCtx() {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === "suspended") audioCtx.resume();
+    return audioCtx;
+  }
+
+  function buildConstraints(test) {
+    const processing = test !== "B"; // Test B = raw
+    const audio = {
+      echoCancellation: processing,
+      noiseSuppression: processing,
+      autoGainControl: processing,
+    };
+    if (currentDeviceId) audio.deviceId = { exact: currentDeviceId };
+    return { audio };
+  }
+
+  async function listMics() {
+    const devices = await navigator.mediaDevices.enumerateDevices();
+    const mics = devices.filter((d) => d.kind === "audioinput");
+    micSelect.innerHTML = "";
+    const def = document.createElement("option");
+    def.value = "";
+    def.textContent = "Default microphone";
+    micSelect.appendChild(def);
+    mics.forEach((m, i) => {
+      if (!m.deviceId || m.deviceId === "default") return;
+      const o = document.createElement("option");
+      o.value = m.deviceId;
+      o.textContent = m.label || `Microphone ${i + 1}`;
+      micSelect.appendChild(o);
+    });
+    micSelect.disabled = micSelect.options.length <= 1;
+    if (micSelect.disabled) {
+      micSelect.innerHTML = "<option>Only one microphone exposed by this phone</option>";
+    }
+  }
+
+  micSelect.addEventListener("change", () => {
+    currentDeviceId = micSelect.value || null;
+  });
+
+  $("#btnPermission").addEventListener("click", async () => {
+    setupStatus.textContent = "Requesting microphone…";
+    setupStatus.className = "status";
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      stream.getTracks().forEach((t) => t.stop());
+      await listMics();
+      setupStatus.textContent = "✅ Microphone enabled. Run the tests below in order.";
+      setupStatus.className = "status ok";
+    } catch (e) {
+      setupStatus.textContent =
+        "❌ Microphone blocked (" + e.name + "). Check the browser's site permissions and reload.";
+      setupStatus.className = "status err";
+    }
+  });
+
+  function pickMime() {
+    const cands = ["audio/mp4", "audio/webm;codecs=opus", "audio/webm", "audio/ogg"];
+    if (!window.MediaRecorder) return null;
+    for (const c of cands) if (MediaRecorder.isTypeSupported(c)) return c;
+    return "";
+  }
+
+  // Speaker tone for Test C: alternating pleasant beeps, loud enough to trigger
+  // echo cancellation, gapped so a working recording still shows the voice.
+  function startSpeakerTone(ctx) {
+    const gain = ctx.createGain();
+    gain.gain.value = 0.35;
+    gain.connect(ctx.destination);
+    const osc = ctx.createOscillator();
+    osc.type = "sine";
+    osc.connect(gain);
+    const t0 = ctx.currentTime;
+    for (let i = 0; i < 16; i++) {
+      osc.frequency.setValueAtTime(i % 2 ? 660 : 440, t0 + i * 0.5);
+    }
+    // pulse the gain: 0.35 for 350ms, near-0 for 150ms
+    for (let i = 0; i < 16; i++) {
+      gain.gain.setValueAtTime(0.35, t0 + i * 0.5);
+      gain.gain.setTargetAtTime(0.001, t0 + i * 0.5 + 0.35, 0.02);
+    }
+    osc.start();
+    return { stop: () => { try { osc.stop(); } catch (_) {} gain.disconnect(); } };
+  }
+
+  async function runTest(card, test, mode) {
+    const btn = $("button[data-action]", card);
+    const fill = $(".meter-fill", card);
+    const timerEl = $(".timer", card);
+    const statsEl = $(".stats", card);
+    const statusEl = $(".status", card);
+    const audioEl = $("audio", card);
+    const durations = { A: 6, B: 6, C: 8, D: 15 };
+    const seconds = durations[test];
+
+    btn.disabled = true;
+    statusEl.textContent = "";
+    statusEl.className = "status";
+    if (audioEl) audioEl.hidden = true;
+
+    let stream;
+    try {
+      stream = await navigator.mediaDevices.getUserMedia(buildConstraints(test));
+    } catch (e) {
+      statusEl.textContent = "❌ Could not open microphone (" + e.name + "). Enable it in Step 0 first.";
+      statusEl.className = "status err";
+      btn.disabled = false;
+      return;
+    }
+
+    const ctx = getCtx();
+    const source = ctx.createMediaStreamSource(stream);
+    const analyser = ctx.createAnalyser();
+    analyser.fftSize = 2048;
+    source.connect(analyser);
+    const buf = new Float32Array(analyser.fftSize);
+
+    let peak = 0;
+    let sumRms = 0;
+    let frames = 0;
+    let running = true;
+
+    function tick() {
+      if (!running) return;
+      analyser.getFloatTimeDomainData(buf);
+      let s = 0, p = 0;
+      for (let i = 0; i < buf.length; i++) {
+        const v = Math.abs(buf[i]);
+        s += v * v;
+        if (v > p) p = v;
+      }
+      const rms = Math.sqrt(s / buf.length);
+      sumRms += rms;
+      frames++;
+      if (p > peak) peak = p;
+      fill.style.width = Math.min(100, rms * 400) + "%";
+      requestAnimationFrame(tick);
+    }
+    tick();
+
+    let tone = null;
+    if (test === "C") tone = startSpeakerTone(ctx);
+
+    let recorder = null;
+    let chunks = [];
+    const mime = pickMime();
+    if (mode === "record" && window.MediaRecorder) {
+      recorder = new MediaRecorder(stream, mime ? { mimeType: mime } : undefined);
+      recorder.ondataavailable = (e) => { if (e.data.size) chunks.push(e.data); };
+      recorder.start();
+    }
+
+    let remaining = seconds;
+    timerEl.textContent = remaining + "s";
+    const interval = setInterval(() => {
+      remaining--;
+      timerEl.textContent = remaining > 0 ? remaining + "s" : "";
+      const avg = frames ? sumRms / frames : 0;
+      statsEl.innerHTML =
+        "average level: <b>" + (avg * 100).toFixed(1) + "</b> · peak: <b>" + (peak * 100).toFixed(1) + "</b> (silence ≈ 0, clear speech usually > 3)";
+    }, 1000);
+
+    await new Promise((res) => setTimeout(res, seconds * 1000));
+
+    running = false;
+    clearInterval(interval);
+    timerEl.textContent = "";
+    fill.style.width = "0%";
+    if (tone) tone.stop();
+
+    const finish = () => {
+      stream.getTracks().forEach((t) => t.stop());
+      source.disconnect();
+      const avg = frames ? sumRms / frames : 0;
+      statsEl.innerHTML =
+        "average level: <b>" + (avg * 100).toFixed(1) + "</b> · peak: <b>" + (peak * 100).toFixed(1) + "</b> (silence ≈ 0, clear speech usually > 3)";
+      if (avg * 100 < 0.5 && mode === "record") {
+        statusEl.textContent = "⚠️ Almost no signal was captured — the microphone picked up essentially nothing.";
+        statusEl.className = "status err";
+      } else {
+        statusEl.textContent = "Done.";
+        statusEl.className = "status ok";
+      }
+      $(".verdict-q", card).hidden = false;
+      $(".choices", card).hidden = false;
+      btn.disabled = false;
+    };
+
+    if (recorder && recorder.state !== "inactive") {
+      recorder.onstop = () => {
+        const blob = new Blob(chunks, { type: mime || "audio/webm" });
+        audioEl.src = URL.createObjectURL(blob);
+        audioEl.hidden = false;
+        finish();
+      };
+      recorder.stop();
+    } else {
+      if (mode === "record") {
+        statusEl.textContent = "⚠️ This browser can't record (no MediaRecorder) — judge by the live meter instead.";
+        statusEl.className = "status err";
+      }
+      finish();
+    }
+  }
+
+  document.querySelectorAll(".card[data-test]").forEach((card) => {
+    const test = card.dataset.test;
+    const btn = $("button[data-action]", card);
+    btn.addEventListener("click", () => runTest(card, test, btn.dataset.action));
+    $(".choices", card).addEventListener("click", (e) => {
+      const b = e.target.closest("button[data-answer]");
+      if (!b) return;
+      answers[test] = b.dataset.answer;
+      $(".choices", card).querySelectorAll("button").forEach((x) => {
+        x.className = "";
+      });
+      b.className = "sel-" + b.dataset.answer;
+      updateVerdict();
+    });
+  });
+
+  function updateVerdict() {
+    const done = Object.values(answers).filter(Boolean).length;
+    const v = $("#verdict");
+    if (done < 2) return; // need at least a couple of answers
+    const { A, B, C, D } = answers;
+    const title = $(".verdict-title", v);
+    const body = $(".verdict-body", v);
+    v.classList.add("show");
+    v.classList.remove("v-hw", "v-sw", "v-ok");
+
+    const bad = (x) => x === "fail" || x === "weak";
+
+    if (D === "fail" || (A === "fail" && B === "fail")) {
+      v.classList.add("v-hw");
+      title.textContent = "🔧 Verdict: most likely a HARDWARE problem";
+      body.innerHTML =
+        "<p>A microphone is producing no signal even with all software processing removed" +
+        (D === "fail" ? ", and the physical mic-location check found a dead spot" : "") +
+        ". That points at a blocked or failed microphone.</p><ul>" +
+        "<li>Clean the mic holes (top edge / near rear camera, and bottom edge) with a soft dry brush; remove the case.</li>" +
+        "<li>If cleaning doesn't fix it, the mic needs a service-center repair. Tell them: <b>“speakerphone mic doesn't pick up my voice, normal calls are fine”</b> — that identifies the secondary (top) microphone.</li></ul>";
+      return;
+    }
+
+    if (A !== null && B !== null && bad(A) && B === "pass") {
+      v.classList.add("v-sw");
+      title.textContent = "💾 Verdict: SOFTWARE problem (audio processing)";
+      body.innerHTML =
+        "<p>Your microphone hardware works — the raw recording (Test B) is clear — but the processed recording (Test A) is not. The phone's voice-processing software (echo cancellation / noise suppression) is suppressing your voice.</p><ul>" +
+        "<li>Update your phone's system software.</li>" +
+        "<li>On Android: in Phone app call settings, disable “noise reduction” if present; try a call in Safe Mode to rule out third-party apps.</li>" +
+        "<li>On iPhone: Settings → Accessibility → Audio/Visual, toggle Phone Noise Cancellation; or Reset All Settings.</li></ul>";
+      return;
+    }
+
+    if (C !== null && bad(C) && (A === "pass" || B === "pass")) {
+      v.classList.add("v-sw");
+      title.textContent = "💾 Verdict: echo-cancellation / speaker interference (software-leaning)";
+      body.innerHTML =
+        "<p>Your mic works alone, but your voice disappears when the loudspeaker is active (Test C) — the phone's echo canceller is wrongly removing your voice along with the speaker sound. This is usually software/DSP, occasionally a weak secondary mic.</p><ul>" +
+        "<li>Update system software; a reboot sometimes resets the audio DSP.</li>" +
+        "<li>Remove any phone case or screen protector covering a mic hole — muffled mics confuse echo cancellation.</li>" +
+        "<li>Retest after cleaning the top mic hole. If Test D showed one weak mic, lean hardware.</li></ul>";
+      return;
+    }
+
+    if (A === "pass" && B === "pass" && (C === "pass" || C === null) && (D === "pass" || D === null)) {
+      v.classList.add("v-ok");
+      title.textContent = "✅ Verdict: mics are fine — the problem is in the CALL software path";
+      body.innerHTML =
+        "<p>Every microphone test passes in the browser, including the speakerphone simulation. Your hardware is healthy; the fault is in the phone-call audio routing (a software problem).</p><ul>" +
+        "<li>Update your phone's system software and the phone/dialer app.</li>" +
+        "<li>Android: clear the Phone app's cache/storage; test in Safe Mode; check if it happens on WhatsApp calls too (if WhatsApp speakerphone works, it's the dialer app).</li>" +
+        "<li>iPhone: toggle off Bluetooth, then Settings → General → Transfer or Reset iPhone → Reset All Settings.</li>" +
+        "<li>If a carrier feature like VoLTE/Wi-Fi Calling was recently enabled, try toggling it.</li></ul>";
+      return;
+    }
+
+    v.classList.add("v-sw");
+    title.textContent = "🤔 Partial results";
+    body.innerHTML = "<p>Answer the remaining tests for a confident verdict. So far the results are mixed — complete Tests A, B, C and D.</p>";
+  }
+})();
+</script>
+</body>
+</html>
