@@ -51,6 +51,18 @@ final class FoodStore: ObservableObject {
         foods.filter { $0.category == category }
     }
 
+    // MARK: - IBS-friendly
+
+    /// Foods safe to eat on a low-FODMAP diet, optionally narrowed to a level.
+    /// High-FODMAP foods are always excluded.
+    func ibsFriendly(level: FodmapLevel? = nil) -> [Food] {
+        foods.filter { food in
+            guard food.isIBSFriendly else { return false }
+            if let level { return food.level == level }
+            return true
+        }
+    }
+
     // MARK: - Search & filter
 
     /// Filters by free-text query and an optional level. Query matches the

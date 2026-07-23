@@ -62,10 +62,14 @@ function foodRow(food) {
   cat.textContent = `${CATEGORY_EMOJI[food.category] || ''} ${food.category}`.trim();
   main.append(name, cat);
 
+  const right = el('div', 'food-right');
   const badge = el('span', `badge ${food.level}`);
   badge.textContent = LEVELS[food.level].title;
+  const portion = el('span', 'portion-pill');
+  portion.textContent = food.portion;
+  right.append(badge, portion);
 
-  li.append(bar, main, badge);
+  li.append(bar, main, right);
   const open = () => openSheet(food);
   li.addEventListener('click', open);
   li.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
@@ -95,6 +99,20 @@ function renderSearch() {
   const count = $('#resultCount');
   count.textContent = results.length ? `${results.length} food${results.length === 1 ? '' : 's'}` : '';
   renderList($('#searchList'), results, $('#searchEmpty'));
+}
+
+// ---------- IBS-Friendly ----------
+let ibsFilter = 'all';
+function renderIBS() {
+  // Foods you can safely eat: low (any serving) + moderate (within portion).
+  const items = foods.filter((f) => {
+    if (f.level === 'high') return false;
+    if (ibsFilter === 'all') return true;
+    return f.level === ibsFilter;
+  });
+  const c = $('#ibsCount');
+  c.textContent = `${items.length} IBS-friendly food${items.length === 1 ? '' : 's'}`;
+  renderList($('#ibsList'), items, null);
 }
 
 // ---------- Categories ----------
@@ -158,6 +176,10 @@ function openSheet(food) {
       <p class="verdict-cat">${CATEGORY_EMOJI[food.category] || ''} ${escapeHTML(food.category)} · ${lvl.title}</p>
       <p class="verdict-summary">${lvl.summary}</p>
     </div>
+    <div class="portion-callout ${food.level}">
+      <span class="portion-label">Safe serving</span>
+      <span class="portion-value">${escapeHTML(food.portion)}</span>
+    </div>
     <div class="detail-section"><h3>⚖️ Serving guidance</h3><p>${escapeHTML(food.serving)}</p></div>
     ${tags}
     ${note}
@@ -185,6 +207,7 @@ function switchTab(target) {
   document.querySelectorAll('.tab').forEach((t) => { t.hidden = t.dataset.tab !== target; });
   document.querySelectorAll('.tabbtn').forEach((b) => b.classList.toggle('is-on', b.dataset.target === target));
   if (target === 'favourites') renderFavourites();
+  if (target === 'ibs') renderIBS();
   if (target === 'categories') closeCategory();
   window.scrollTo(0, 0);
 }
@@ -220,6 +243,14 @@ function init() {
   document.querySelector('.tabbar').addEventListener('click', (e) => {
     const btn = e.target.closest('.tabbtn');
     if (btn) switchTab(btn.dataset.target);
+  });
+
+  $('#ibsFilters').addEventListener('click', (e) => {
+    const btn = e.target.closest('.chip');
+    if (!btn) return;
+    ibsFilter = btn.dataset.ibs;
+    document.querySelectorAll('#ibsFilters .chip').forEach((c) => c.classList.toggle('is-on', c === btn));
+    renderIBS();
   });
 
   $('#categoryBack').addEventListener('click', closeCategory);

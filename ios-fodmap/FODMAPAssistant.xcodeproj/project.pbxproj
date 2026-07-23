@@ -18,6 +18,7 @@
 		FB0000000000000000000019 /* CategoriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0000000000000000000019 /* CategoriesView.swift */; };
 		FB000000000000000000001A /* FavouritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA000000000000000000001A /* FavouritesView.swift */; };
 		FB000000000000000000001B /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA000000000000000000001B /* AboutView.swift */; };
+		FB000000000000000000001C /* IBSFriendlyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA000000000000000000001C /* IBSFriendlyView.swift */; };
 		FB0000000000000000000020 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA0000000000000000000020 /* Assets.xcassets */; };
 		FB0000000000000000000021 /* foods.json in Resources */ = {isa = PBXBuildFile; fileRef = FA0000000000000000000021 /* foods.json */; };
 /* End PBXBuildFile section */
@@ -35,6 +36,7 @@
 		FA0000000000000000000019 /* CategoriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views/CategoriesView.swift; sourceTree = "<group>"; };
 		FA000000000000000000001A /* FavouritesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views/FavouritesView.swift; sourceTree = "<group>"; };
 		FA000000000000000000001B /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views/AboutView.swift; sourceTree = "<group>"; };
+		FA000000000000000000001C /* IBSFriendlyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views/IBSFriendlyView.swift; sourceTree = "<group>"; };
 		FA0000000000000000000020 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FA0000000000000000000021 /* foods.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Data/foods.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -72,6 +74,7 @@
 				FA0000000000000000000019 /* CategoriesView.swift */,
 				FA000000000000000000001A /* FavouritesView.swift */,
 				FA000000000000000000001B /* AboutView.swift */,
+				FA000000000000000000001C /* IBSFriendlyView.swift */,
 				FA0000000000000000000021 /* foods.json */,
 				FA0000000000000000000020 /* Assets.xcassets */,
 			);
@@ -167,6 +170,7 @@
 				FB0000000000000000000019 /* CategoriesView.swift in Sources */,
 				FB000000000000000000001A /* FavouritesView.swift in Sources */,
 				FB000000000000000000001B /* AboutView.swift in Sources */,
+				FB000000000000000000001C /* IBSFriendlyView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

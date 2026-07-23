@@ -16,7 +16,11 @@ your Home Screen**.
 
 - **Search** — type a food (`garlic`, `apple`, `oats`) for an instant
   colour-coded verdict. Also matches categories and FODMAP groups (search
-  `lactose` to list every lactose food).
+  `lactose` to list every lactose food). Every result shows its **safe serving
+  amount** at a glance.
+- **IBS-Friendly** — a dedicated tab listing only the foods you *can* eat, each
+  with its safe serving quantity. Filter by 🟢 *Any serving* (low FODMAP) or
+  🟡 *Watch portion* (safe only within the amount shown).
 - **Filter** by verdict: 🟢 Enjoy, 🟡 Careful, 🔴 Avoid.
 - **Browse by category** — 11 categories, each showing how many foods are safe.
 - **Food detail sheet** — verdict, **serving guidance**, the FODMAP groups

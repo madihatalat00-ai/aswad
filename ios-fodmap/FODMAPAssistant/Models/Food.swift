@@ -60,14 +60,20 @@ struct Food: Identifiable, Codable, Hashable {
     /// Portion guidance — the heart of the diet, since many foods are only
     /// safe below a threshold serving.
     var serving: String
+    /// Concise headline serving amount, e.g. "10 nuts" or "Any amount".
+    var portion: String
     /// Optional tip or low-FODMAP alternative.
     var note: String
 
     // Stable identity derived from the name so favourites survive relaunches.
     var id: String { name }
 
+    /// Whether the food is safe to eat on a low-FODMAP diet (low or, within
+    /// its portion, moderate). High-FODMAP foods are not IBS-friendly.
+    var isIBSFriendly: Bool { level != .high }
+
     private enum CodingKeys: String, CodingKey {
-        case name, category, level, fodmaps, serving, note
+        case name, category, level, fodmaps, serving, portion, note
     }
 }
 

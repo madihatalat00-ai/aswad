@@ -10,6 +10,7 @@ const FOODS = [
 "Sorbitol"
 ],
 "serving": "High even in small amounts — best avoided during the elimination phase.",
+"portion": "Avoid",
 "note": "Swap for firm banana, orange, or strawberries."
 },
 {
@@ -21,6 +22,7 @@ const FOODS = [
 "Sorbitol"
 ],
 "serving": "High in fructose and sorbitol. Avoid.",
+"portion": "Avoid",
 "note": "Try kiwi or pineapple instead."
 },
 {
@@ -31,6 +33,7 @@ const FOODS = [
 "Excess fructose"
 ],
 "serving": "40g (about 1/4 mango) can be tolerated; a full serve is high.",
+"portion": "¼ mango (40g)",
 "note": "Keep portions very small."
 },
 {
@@ -43,6 +46,7 @@ const FOODS = [
 "Mannitol"
 ],
 "serving": "High — best avoided.",
+"portion": "Avoid",
 "note": "Cantaloupe or honeydew are gentler melons."
 },
 {
@@ -54,6 +58,7 @@ const FOODS = [
 "Sorbitol"
 ],
 "serving": "High — avoid during elimination.",
+"portion": "Avoid",
 "note": "Strawberries are a low-FODMAP alternative."
 },
 {
@@ -64,6 +69,7 @@ const FOODS = [
 "Sorbitol"
 ],
 "serving": "Low up to 30g; larger servings are high in sorbitol.",
+"portion": "30g (small slice)",
 "note": "Stick to a small slice."
 },
 {
@@ -75,6 +81,7 @@ const FOODS = [
 "Sorbitol"
 ],
 "serving": "High — avoid.",
+"portion": "Avoid",
 "note": ""
 },
 {
@@ -85,6 +92,7 @@ const FOODS = [
 "Sorbitol"
 ],
 "serving": "High in sorbitol. Avoid.",
+"portion": "Avoid",
 "note": ""
 },
 {
@@ -95,6 +103,7 @@ const FOODS = [
 "Sorbitol"
 ],
 "serving": "High in sorbitol. Avoid, especially dried.",
+"portion": "Avoid",
 "note": ""
 },
 {
@@ -105,6 +114,7 @@ const FOODS = [
 "Sorbitol"
 ],
 "serving": "High in sorbitol. Avoid.",
+"portion": "Avoid",
 "note": "Blueberries and raspberries are safer berries."
 },
 {
@@ -116,6 +126,7 @@ const FOODS = [
 "Excess fructose"
 ],
 "serving": "Very concentrated FODMAPs. Avoid, or keep to ~1 tbsp.",
+"portion": "1 tbsp max",
 "note": ""
 },
 {
@@ -126,6 +137,7 @@ const FOODS = [
 "Excess fructose"
 ],
 "serving": "High — avoid.",
+"portion": "Avoid",
 "note": ""
 },
 {
@@ -136,6 +148,7 @@ const FOODS = [
 "Fructans"
 ],
 "serving": "Low up to 80g (about 1/2 small); larger is high.",
+"portion": "80g (½ small)",
 "note": ""
 },
 {
@@ -146,6 +159,7 @@ const FOODS = [
 "Sorbitol"
 ],
 "serving": "Low up to 30g (about 1/8 avocado); 80g+ is high in sorbitol.",
+"portion": "⅛ avocado (30g)",
 "note": "Portion is everything here."
 },
 {
@@ -154,6 +168,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "1 medium (100g) is low FODMAP.",
+"portion": "1 medium (100g)",
 "note": "Ripe/spotty bananas are higher in fructans — keep those to 1/3."
 },
 {
@@ -162,6 +177,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low up to about 40g (1/4 cup).",
+"portion": "¼ cup (40g)",
 "note": ""
 },
 {
@@ -170,6 +186,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — a normal serving (~10 medium) is fine.",
+"portion": "~10 medium",
 "note": ""
 },
 {
@@ -178,6 +195,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — about 1 cup is fine.",
+"portion": "1 cup",
 "note": ""
 },
 {
@@ -186,6 +204,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — 1 medium is fine.",
+"portion": "1 medium",
 "note": ""
 },
 {
@@ -194,6 +213,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — 2 small are fine.",
+"portion": "2 small",
 "note": ""
 },
 {
@@ -202,6 +222,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — 2 small are fine.",
+"portion": "2 small",
 "note": ""
 },
 {
@@ -210,6 +231,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — about 1 cup chopped is fine.",
+"portion": "1 cup",
 "note": ""
 },
 {
@@ -218,6 +240,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low up to about 120g; larger servings add up.",
+"portion": "120g (¾ cup)",
 "note": ""
 },
 {
@@ -226,6 +249,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low up to about 90g.",
+"portion": "90g (½ cup)",
 "note": ""
 },
 {
@@ -234,6 +258,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low up to about 60g (30 berries).",
+"portion": "60g (30 berries)",
 "note": ""
 },
 {
@@ -242,6 +267,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — juice and zest are fine.",
+"portion": "Any amount",
 "note": ""
 },
 {
@@ -250,6 +276,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — juice and zest are fine.",
+"portion": "Any amount",
 "note": ""
 },
 {
@@ -258,6 +285,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — 1 fruit is fine.",
+"portion": "1 fruit",
 "note": ""
 },
 {
@@ -266,6 +294,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — about 1 cup is fine.",
+"portion": "1 cup",
 "note": ""
 },
 {
@@ -274,6 +303,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — about 1 cup is fine.",
+"portion": "1 cup",
 "note": ""
 },
 {
@@ -282,6 +312,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — 1 cup is fine.",
+"portion": "1 cup",
 "note": ""
 },
 {
@@ -292,6 +323,7 @@ const FOODS = [
 "Fructans"
 ],
 "serving": "One of the highest-FODMAP foods. Avoid.",
+"portion": "Avoid",
 "note": "Use garlic-infused oil — FODMAPs don't dissolve into oil."
 },
 {
@@ -302,6 +334,7 @@ const FOODS = [
 "Fructans"
 ],
 "serving": "Very high, including powder. Avoid.",
+"portion": "Avoid",
 "note": "Use the green tops of spring onions or chives."
 },
 {
@@ -312,6 +345,7 @@ const FOODS = [
 "Mannitol"
 ],
 "serving": "High in mannitol. Avoid.",
+"portion": "Avoid",
 "note": ""
 },
 {
@@ -322,6 +356,7 @@ const FOODS = [
 "Mannitol"
 ],
 "serving": "High in mannitol. Avoid.",
+"portion": "Avoid",
 "note": "Canned or oyster mushrooms are low FODMAP."
 },
 {
@@ -333,6 +368,7 @@ const FOODS = [
 "Sorbitol"
 ],
 "serving": "High — avoid.",
+"portion": "Avoid",
 "note": ""
 },
 {
@@ -344,6 +380,7 @@ const FOODS = [
 "Fructans"
 ],
 "serving": "High — avoid.",
+"portion": "Avoid",
 "note": ""
 },
 {
@@ -354,6 +391,7 @@ const FOODS = [
 "Fructans"
 ],
 "serving": "The white bulb is high. Avoid.",
+"portion": "Avoid (leaves OK)",
 "note": "The green leaves are low FODMAP."
 },
 {
@@ -365,6 +403,7 @@ const FOODS = [
 "Mannitol"
 ],
 "serving": "Low up to 5 pods; more is high.",
+"portion": "5 pods",
 "note": ""
 },
 {
@@ -375,6 +414,7 @@ const FOODS = [
 "Sorbitol"
 ],
 "serving": "Low up to 1/2 cob; a whole cob is high.",
+"portion": "½ cob",
 "note": ""
 },
 {
@@ -385,6 +425,7 @@ const FOODS = [
 "Fructans"
 ],
 "serving": "Low up to 20g cooked; raw and larger servings are high.",
+"portion": "20g cooked",
 "note": ""
 },
 {
@@ -395,6 +436,7 @@ const FOODS = [
 "Mannitol"
 ],
 "serving": "Low up to 10g (about 1/4 stalk); more is high.",
+"portion": "¼ stalk (10g)",
 "note": ""
 },
 {
@@ -405,6 +447,7 @@ const FOODS = [
 "Fructans"
 ],
 "serving": "Low up to 2 sprouts; more brings on fructans.",
+"portion": "2 sprouts",
 "note": ""
 },
 {
@@ -415,6 +458,7 @@ const FOODS = [
 "Sorbitol"
 ],
 "serving": "Low up to 75g; larger is high.",
+"portion": "75g (1 cup)",
 "note": "Common green cabbage is low at 75g too."
 },
 {
@@ -425,6 +469,7 @@ const FOODS = [
 "Mannitol"
 ],
 "serving": "Low up to 75g (about 1/2 cup); more is high.",
+"portion": "½ cup (75g)",
 "note": ""
 },
 {
@@ -435,6 +480,7 @@ const FOODS = [
 "Mannitol"
 ],
 "serving": "Low up to 45g; more is high.",
+"portion": "45g (¼ cup)",
 "note": "Japanese/kabocha pumpkin is low FODMAP."
 },
 {
@@ -443,6 +489,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — no known limit.",
+"portion": "Any amount",
 "note": ""
 },
 {
@@ -451,6 +498,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low up to about 65g.",
+"portion": "65g (⅓ cup)",
 "note": ""
 },
 {
@@ -459,6 +507,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — a normal serving is fine.",
+"portion": "Any amount",
 "note": ""
 },
 {
@@ -467,6 +516,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — about 1/2 pepper is fine.",
+"portion": "½ pepper",
 "note": ""
 },
 {
@@ -475,6 +525,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low up to about 75g (1 cup).",
+"portion": "1 cup (75g)",
 "note": ""
 },
 {
@@ -483,6 +534,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — common and cherry tomatoes are fine in normal servings.",
+"portion": "Normal serving",
 "note": ""
 },
 {
@@ -491,6 +543,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low up to about 75g.",
+"portion": "75g (1½ cups)",
 "note": ""
 },
 {
@@ -499,6 +552,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — a normal serving is fine.",
+"portion": "Normal serving",
 "note": ""
 },
 {
@@ -507,6 +561,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — all common varieties are fine.",
+"portion": "Any amount",
 "note": ""
 },
 {
@@ -515,6 +570,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — about 1 cup is fine.",
+"portion": "1 cup",
 "note": ""
 },
 {
@@ -523,6 +579,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low up to about 75g (15 beans).",
+"portion": "15 beans (75g)",
 "note": ""
 },
 {
@@ -531,6 +588,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — a great safe staple.",
+"portion": "Any amount",
 "note": ""
 },
 {
@@ -539,6 +597,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Heads low up to 75g; the stalks are higher in fructans.",
+"portion": "¾ cup florets (75g)",
 "note": "Favour the florets over the stems."
 },
 {
@@ -547,6 +606,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — a normal serving is fine.",
+"portion": "Normal serving",
 "note": ""
 },
 {
@@ -555,6 +615,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — about 2 radishes.",
+"portion": "2 radishes",
 "note": ""
 },
 {
@@ -563,6 +624,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — great for flavour and settling the gut.",
+"portion": "Any amount",
 "note": ""
 },
 {
@@ -571,6 +633,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Green tops only are low — a great onion substitute.",
+"portion": "Green tops freely",
 "note": "The white bulb is high in fructans."
 },
 {
@@ -579,6 +642,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — a good oniony flavour hit.",
+"portion": "Any amount",
 "note": ""
 },
 {
@@ -587,6 +651,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — green and black olives are fine.",
+"portion": "Normal serving",
 "note": ""
 },
 {
@@ -597,6 +662,7 @@ const FOODS = [
 "Fructans"
 ],
 "serving": "High in fructans. Limit or avoid during elimination.",
+"portion": "Avoid",
 "note": "Try sourdough spelt or gluten-free bread."
 },
 {
@@ -607,6 +673,7 @@ const FOODS = [
 "Fructans"
 ],
 "serving": "Low up to 1/2 cup cooked; a full plate is high.",
+"portion": "½ cup cooked",
 "note": "Gluten-free pasta is low FODMAP."
 },
 {
@@ -618,6 +685,7 @@ const FOODS = [
 "GOS"
 ],
 "serving": "High — avoid.",
+"portion": "Avoid",
 "note": ""
 },
 {
@@ -628,6 +696,7 @@ const FOODS = [
 "Fructans"
 ],
 "serving": "Made from wheat — high. Avoid.",
+"portion": "Avoid",
 "note": "Quinoa is a great swap."
 },
 {
@@ -638,6 +707,7 @@ const FOODS = [
 "Fructans"
 ],
 "serving": "Low at about 1 thin slice; more is high.",
+"portion": "1 thin slice",
 "note": ""
 },
 {
@@ -648,6 +718,7 @@ const FOODS = [
 "Fructans"
 ],
 "serving": "High in fructans. Avoid.",
+"portion": "Avoid",
 "note": "Rolled oats or corn flakes are gentler."
 },
 {
@@ -656,6 +727,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — an excellent safe staple.",
+"portion": "Any amount",
 "note": ""
 },
 {
@@ -664,6 +736,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — a normal serving is fine.",
+"portion": "Normal serving",
 "note": ""
 },
 {
@@ -672,6 +745,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — 1 cup cooked is fine.",
+"portion": "1 cup cooked",
 "note": ""
 },
 {
@@ -680,6 +754,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low up to about 1/2 cup uncooked.",
+"portion": "½ cup uncooked",
 "note": ""
 },
 {
@@ -688,6 +763,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — a normal serving is fine.",
+"portion": "Normal serving",
 "note": ""
 },
 {
@@ -696,6 +772,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — a normal serving is fine.",
+"portion": "Normal serving",
 "note": ""
 },
 {
@@ -704,6 +781,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — naturally gluten free.",
+"portion": "Normal serving",
 "note": ""
 },
 {
@@ -712,6 +790,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — a normal serving is fine.",
+"portion": "Normal serving",
 "note": ""
 },
 {
@@ -720,6 +799,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low up to about 7 cups popped.",
+"portion": "7 cups popped",
 "note": ""
 },
 {
@@ -728,6 +808,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — 3 tortillas are fine.",
+"portion": "3 tortillas",
 "note": ""
 },
 {
@@ -736,6 +817,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low at 2 slices — slow fermentation lowers fructans.",
+"portion": "2 slices",
 "note": ""
 },
 {
@@ -746,6 +828,7 @@ const FOODS = [
 "Lactose"
 ],
 "serving": "High in lactose. Avoid.",
+"portion": "Avoid",
 "note": "Lactose-free or almond milk work well."
 },
 {
@@ -756,6 +839,7 @@ const FOODS = [
 "Lactose"
 ],
 "serving": "High in lactose. Avoid.",
+"portion": "Avoid",
 "note": "Lactose-free or coconut yogurt are safe."
 },
 {
@@ -766,6 +850,7 @@ const FOODS = [
 "Lactose"
 ],
 "serving": "High in lactose. Avoid.",
+"portion": "Avoid",
 "note": "Sorbet or lactose-free ice cream instead."
 },
 {
@@ -776,6 +861,7 @@ const FOODS = [
 "Lactose"
 ],
 "serving": "High in lactose. Avoid, or keep ricotta to ~2 tbsp.",
+"portion": "2 tbsp ricotta",
 "note": "Hard cheeses are naturally low in lactose."
 },
 {
@@ -786,6 +872,7 @@ const FOODS = [
 "Lactose"
 ],
 "serving": "Made with milk — high. Avoid.",
+"portion": "Avoid",
 "note": ""
 },
 {
@@ -796,6 +883,7 @@ const FOODS = [
 "Lactose"
 ],
 "serving": "Lower in lactose than regular; still keep servings small.",
+"portion": "Small (~2 tbsp)",
 "note": "Lactose-free Greek yogurt is fully safe."
 },
 {
@@ -807,6 +895,7 @@ const FOODS = [
 "GOS"
 ],
 "serving": "Low up to about 1/3 cup; more is high.",
+"portion": "⅓ cup",
 "note": ""
 },
 {
@@ -815,6 +904,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — a full glass is fine.",
+"portion": "1 glass",
 "note": ""
 },
 {
@@ -823,6 +913,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low up to about 1 cup.",
+"portion": "1 cup",
 "note": ""
 },
 {
@@ -831,6 +922,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low if made from soy protein; milk from whole soybeans is high.",
+"portion": "1 cup",
 "note": "Check the label for 'soy protein'."
 },
 {
@@ -839,6 +931,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low up to about 200ml.",
+"portion": "200ml",
 "note": ""
 },
 {
@@ -847,6 +940,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — hard cheese has almost no lactose.",
+"portion": "Normal serving",
 "note": ""
 },
 {
@@ -855,6 +949,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — a normal serving is fine.",
+"portion": "Normal serving",
 "note": ""
 },
 {
@@ -863,6 +958,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — a normal serving is fine.",
+"portion": "Normal serving",
 "note": ""
 },
 {
@@ -871,6 +967,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — great for flavour.",
+"portion": "Normal serving",
 "note": ""
 },
 {
@@ -879,6 +976,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low up to about 40g.",
+"portion": "40g",
 "note": ""
 },
 {
@@ -887,6 +985,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — fat contains no lactose.",
+"portion": "Any amount",
 "note": ""
 },
 {
@@ -895,6 +994,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low up to about 1/2 cup.",
+"portion": "½ cup",
 "note": ""
 },
 {
@@ -903,6 +1003,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — plain meat has no FODMAPs.",
+"portion": "Any amount (plain)",
 "note": "Watch marinades for onion and garlic."
 },
 {
@@ -911,6 +1012,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — plain meat has no FODMAPs.",
+"portion": "Any amount (plain)",
 "note": ""
 },
 {
@@ -919,6 +1021,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — plain meat has no FODMAPs.",
+"portion": "Any amount (plain)",
 "note": ""
 },
 {
@@ -927,6 +1030,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — plain meat has no FODMAPs.",
+"portion": "Any amount (plain)",
 "note": ""
 },
 {
@@ -935,6 +1039,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — plain fish has no FODMAPs.",
+"portion": "Any amount (plain)",
 "note": ""
 },
 {
@@ -943,6 +1048,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — plain shellfish is fine.",
+"portion": "Any amount (plain)",
 "note": ""
 },
 {
@@ -951,6 +1057,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — a great safe protein.",
+"portion": "Any amount",
 "note": ""
 },
 {
@@ -959,6 +1066,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — drained, firm tofu is fine.",
+"portion": "Normal serving",
 "note": "Silken tofu is high in GOS."
 },
 {
@@ -967,6 +1075,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — fermentation lowers FODMAPs.",
+"portion": "Normal serving",
 "note": ""
 },
 {
@@ -975,6 +1084,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — plain bacon is fine.",
+"portion": "Normal serving",
 "note": ""
 },
 {
@@ -985,6 +1095,7 @@ const FOODS = [
 "GOS"
 ],
 "serving": "High in GOS. Avoid — choose firm tofu.",
+"portion": "Avoid",
 "note": ""
 },
 {
@@ -995,6 +1106,7 @@ const FOODS = [
 "Fructans"
 ],
 "serving": "Often contain onion, garlic, or wheat filler — check the label.",
+"portion": "Check label",
 "note": ""
 },
 {
@@ -1006,6 +1118,7 @@ const FOODS = [
 "Fructans"
 ],
 "serving": "High in GOS. Avoid.",
+"portion": "Avoid",
 "note": "Canned & rinsed chickpeas in small amounts are gentler."
 },
 {
@@ -1017,6 +1130,7 @@ const FOODS = [
 "Fructans"
 ],
 "serving": "High — avoid.",
+"portion": "Avoid",
 "note": ""
 },
 {
@@ -1027,6 +1141,7 @@ const FOODS = [
 "GOS"
 ],
 "serving": "High in GOS. Avoid.",
+"portion": "Avoid",
 "note": ""
 },
 {
@@ -1038,6 +1153,7 @@ const FOODS = [
 "Fructans"
 ],
 "serving": "High — avoid. Firm tofu and tempeh are fine.",
+"portion": "Avoid",
 "note": ""
 },
 {
@@ -1048,6 +1164,7 @@ const FOODS = [
 "GOS"
 ],
 "serving": "High in GOS. Avoid.",
+"portion": "Avoid",
 "note": ""
 },
 {
@@ -1058,6 +1175,7 @@ const FOODS = [
 "GOS"
 ],
 "serving": "Low up to 1/4 cup canned & rinsed; dried and larger servings are high.",
+"portion": "¼ cup",
 "note": "Rinsing washes away some GOS."
 },
 {
@@ -1068,6 +1186,7 @@ const FOODS = [
 "GOS"
 ],
 "serving": "Low up to 1/2 cup canned & rinsed; boiled-from-dry are higher.",
+"portion": "½ cup",
 "note": ""
 },
 {
@@ -1078,6 +1197,7 @@ const FOODS = [
 "GOS"
 ],
 "serving": "Low up to about 1/4 cup canned & rinsed.",
+"portion": "¼ cup",
 "note": ""
 },
 {
@@ -1086,6 +1206,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low up to about 1/2 cup.",
+"portion": "½ cup",
 "note": ""
 },
 {
@@ -1096,6 +1217,7 @@ const FOODS = [
 "GOS"
 ],
 "serving": "Low up to about 15g; more is high.",
+"portion": "15g (1 tbsp)",
 "note": ""
 },
 {
@@ -1107,6 +1229,7 @@ const FOODS = [
 "Fructans"
 ],
 "serving": "High — avoid.",
+"portion": "Avoid",
 "note": "Macadamias and peanuts are safe swaps."
 },
 {
@@ -1118,6 +1241,7 @@ const FOODS = [
 "Fructans"
 ],
 "serving": "High — avoid.",
+"portion": "Avoid",
 "note": ""
 },
 {
@@ -1128,6 +1252,7 @@ const FOODS = [
 "GOS"
 ],
 "serving": "Low up to 10 nuts; more is high.",
+"portion": "10 nuts",
 "note": ""
 },
 {
@@ -1139,6 +1264,7 @@ const FOODS = [
 "Fructans"
 ],
 "serving": "Low up to 10 nuts; more is high.",
+"portion": "10 nuts",
 "note": ""
 },
 {
@@ -1147,6 +1273,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — about 32 nuts.",
+"portion": "32 nuts",
 "note": ""
 },
 {
@@ -1155,6 +1282,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — about 20 nuts.",
+"portion": "20 nuts",
 "note": ""
 },
 {
@@ -1163,6 +1291,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — about 10 halves.",
+"portion": "10 halves",
 "note": ""
 },
 {
@@ -1171,6 +1300,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — about 10 halves.",
+"portion": "10 halves",
 "note": ""
 },
 {
@@ -1179,6 +1309,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — about 1 tbsp.",
+"portion": "1 tbsp",
 "note": ""
 },
 {
@@ -1187,6 +1318,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — about 2 tbsp.",
+"portion": "2 tbsp",
 "note": ""
 },
 {
@@ -1195,6 +1327,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low up to about 2 tbsp.",
+"portion": "2 tbsp",
 "note": ""
 },
 {
@@ -1203,6 +1336,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low up to about 1 tbsp.",
+"portion": "1 tbsp",
 "note": ""
 },
 {
@@ -1211,6 +1345,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low up to about 2 tbsp.",
+"portion": "2 tbsp",
 "note": "Choose a version without added honey."
 },
 {
@@ -1221,6 +1356,7 @@ const FOODS = [
 "Excess fructose"
 ],
 "serving": "High in fructose. Avoid.",
+"portion": "Avoid",
 "note": "Maple syrup or rice malt syrup instead."
 },
 {
@@ -1231,6 +1367,7 @@ const FOODS = [
 "Excess fructose"
 ],
 "serving": "High — check labels on soft drinks and sauces.",
+"portion": "Avoid",
 "note": ""
 },
 {
@@ -1241,6 +1378,7 @@ const FOODS = [
 "Excess fructose"
 ],
 "serving": "High in fructose. Avoid.",
+"portion": "Avoid",
 "note": ""
 },
 {
@@ -1251,6 +1389,7 @@ const FOODS = [
 "Polyols"
 ],
 "serving": "Sugar alcohols (E420, E967, E421) are high. Avoid.",
+"portion": "Avoid",
 "note": "Common in sugar-free gum, mints, and sweets."
 },
 {
@@ -1261,6 +1400,7 @@ const FOODS = [
 "Polyols"
 ],
 "serving": "Contain polyols. Avoid.",
+"portion": "Avoid",
 "note": ""
 },
 {
@@ -1269,6 +1409,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low in normal amounts.",
+"portion": "Normal amounts",
 "note": ""
 },
 {
@@ -1277,6 +1418,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low up to about 2 tbsp.",
+"portion": "2 tbsp",
 "note": ""
 },
 {
@@ -1285,6 +1427,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — a good honey substitute.",
+"portion": "Normal amounts",
 "note": ""
 },
 {
@@ -1293,6 +1436,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — pure stevia is fine.",
+"portion": "Normal amounts",
 "note": ""
 },
 {
@@ -1301,6 +1445,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low up to about 30g.",
+"portion": "30g",
 "note": ""
 },
 {
@@ -1311,6 +1456,7 @@ const FOODS = [
 "Lactose"
 ],
 "serving": "Low up to about 20g; more brings on lactose.",
+"portion": "20g",
 "note": ""
 },
 {
@@ -1319,6 +1465,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low in normal amounts.",
+"portion": "Normal amounts",
 "note": ""
 },
 {
@@ -1329,6 +1476,7 @@ const FOODS = [
 "Fructans"
 ],
 "serving": "Concentrated fructans. Avoid.",
+"portion": "Avoid",
 "note": "Use garlic-infused oil for flavour."
 },
 {
@@ -1339,6 +1487,7 @@ const FOODS = [
 "Fructans"
 ],
 "serving": "Concentrated fructans. Avoid.",
+"portion": "Avoid",
 "note": ""
 },
 {
@@ -1350,6 +1499,7 @@ const FOODS = [
 "Fructans"
 ],
 "serving": "Chickpeas plus garlic — high. Avoid.",
+"portion": "Avoid",
 "note": ""
 },
 {
@@ -1361,6 +1511,7 @@ const FOODS = [
 "GOS"
 ],
 "serving": "Usually has garlic and cashews — check or make your own.",
+"portion": "Check label",
 "note": ""
 },
 {
@@ -1372,6 +1523,7 @@ const FOODS = [
 "Excess fructose"
 ],
 "serving": "Often has onion, garlic, and HFCS — check the label.",
+"portion": "Check label",
 "note": ""
 },
 {
@@ -1382,6 +1534,7 @@ const FOODS = [
 "Fructans"
 ],
 "serving": "Usually contains garlic — use sparingly.",
+"portion": "Use sparingly",
 "note": ""
 },
 {
@@ -1390,6 +1543,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low up to about 1 sachet (13g); check for HFCS.",
+"portion": "1 sachet (13g)",
 "note": ""
 },
 {
@@ -1398,6 +1552,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low up to about 1 tbsp.",
+"portion": "1 tbsp",
 "note": ""
 },
 {
@@ -1406,6 +1561,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low up to about 2 tbsp.",
+"portion": "2 tbsp",
 "note": ""
 },
 {
@@ -1414,6 +1570,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — plain mayo (no garlic) is fine.",
+"portion": "Normal serving",
 "note": ""
 },
 {
@@ -1422,6 +1579,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — all oils are FODMAP-free.",
+"portion": "Any amount",
 "note": ""
 },
 {
@@ -1430,6 +1588,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — FODMAPs are not oil-soluble, so the flavour transfers but the fructans don't.",
+"portion": "Any amount",
 "note": "The best way to get garlic flavour."
 },
 {
@@ -1438,6 +1597,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Balsamic low up to about 1 tbsp.",
+"portion": "1 tbsp",
 "note": ""
 },
 {
@@ -1446,6 +1606,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low up to about 1 tbsp.",
+"portion": "1 tbsp",
 "note": ""
 },
 {
@@ -1457,6 +1618,7 @@ const FOODS = [
 "Sorbitol"
 ],
 "serving": "High — avoid.",
+"portion": "Avoid",
 "note": ""
 },
 {
@@ -1467,6 +1629,7 @@ const FOODS = [
 "Excess fructose"
 ],
 "serving": "High in fructose. Avoid.",
+"portion": "Avoid",
 "note": "Other spirits, wine, and beer are low."
 },
 {
@@ -1477,6 +1640,7 @@ const FOODS = [
 "Fructans"
 ],
 "serving": "High in fructans. Avoid.",
+"portion": "Avoid",
 "note": "Peppermint or green tea are safe."
 },
 {
@@ -1487,6 +1651,7 @@ const FOODS = [
 "Fructans"
 ],
 "serving": "High in fructans. Avoid.",
+"portion": "Avoid",
 "note": ""
 },
 {
@@ -1497,6 +1662,7 @@ const FOODS = [
 "Excess fructose"
 ],
 "serving": "Low up to about 1/2 cup; more is high.",
+"portion": "½ cup",
 "note": ""
 },
 {
@@ -1507,6 +1673,7 @@ const FOODS = [
 "Fructans"
 ],
 "serving": "Low up to about 180ml; more may be high.",
+"portion": "180ml",
 "note": ""
 },
 {
@@ -1517,6 +1684,7 @@ const FOODS = [
 "Excess fructose"
 ],
 "serving": "Low up to about 100ml; more is high.",
+"portion": "100ml",
 "note": ""
 },
 {
@@ -1525,6 +1693,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — always safe.",
+"portion": "Any amount",
 "note": ""
 },
 {
@@ -1533,6 +1702,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — the caffeine can still irritate the gut for some.",
+"portion": "Normal cup",
 "note": "Use lactose-free or almond milk."
 },
 {
@@ -1541,6 +1711,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low when brewed weak; a strong brew can be higher.",
+"portion": "Weak brew",
 "note": ""
 },
 {
@@ -1549,6 +1720,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — may even soothe the gut.",
+"portion": "Any amount",
 "note": ""
 },
 {
@@ -1557,6 +1729,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — a normal cup is fine.",
+"portion": "Normal cup",
 "note": ""
 },
 {
@@ -1565,6 +1738,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low up to about 1 bottle; alcohol is still a gut irritant.",
+"portion": "1 bottle",
 "note": ""
 },
 {
@@ -1573,6 +1747,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low up to about 1 glass.",
+"portion": "1 glass",
 "note": ""
 },
 {
@@ -1581,6 +1756,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — fresh or dried.",
+"portion": "Any amount",
 "note": ""
 },
 {
@@ -1589,6 +1765,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — fresh or dried.",
+"portion": "Any amount",
 "note": ""
 },
 {
@@ -1597,6 +1774,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — a normal serving is fine.",
+"portion": "Any amount",
 "note": ""
 },
 {
@@ -1605,6 +1783,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — a normal serving is fine.",
+"portion": "Any amount",
 "note": ""
 },
 {
@@ -1613,6 +1792,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — a normal serving is fine.",
+"portion": "Any amount",
 "note": ""
 },
 {
@@ -1621,6 +1801,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — a normal serving is fine.",
+"portion": "Any amount",
 "note": ""
 },
 {
@@ -1629,6 +1810,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — a normal serving is fine.",
+"portion": "Any amount",
 "note": ""
 },
 {
@@ -1637,6 +1819,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — a normal serving is fine.",
+"portion": "Any amount",
 "note": ""
 },
 {
@@ -1645,6 +1828,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — a normal serving is fine.",
+"portion": "Any amount",
 "note": ""
 },
 {
@@ -1653,6 +1837,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — plain paprika is fine.",
+"portion": "Any amount",
 "note": ""
 },
 {
@@ -1661,6 +1846,7 @@ const FOODS = [
 "level": "low",
 "fodmaps": [],
 "serving": "Low — check blends for added onion or garlic.",
+"portion": "Any amount",
 "note": ""
 }
 ];

@@ -12,7 +12,11 @@ works offline.
 
 - **Search** — type a food (e.g. `garlic`, `apple`, `oats`) and get an instant
   colour-coded verdict. Search also matches categories and FODMAP groups
-  (search `lactose` to see every lactose-containing food).
+  (search `lactose` to see every lactose-containing food). Every row shows the
+  food's **safe serving amount**.
+- **IBS-Safe tab** — a curated list of only the foods you *can* eat, each with
+  its safe serving quantity, filterable by **Any serving** (low FODMAP) or
+  **Watch portion** (safe only within the amount shown).
 - **Quick filters** — narrow the list to **Enjoy**, **Careful**, or **Avoid**.
 - **Browse by category** — Fruits, Vegetables, Grains, Dairy & alternatives,
   Protein, Legumes, Nuts & seeds, Sweeteners, Condiments, Beverages, and

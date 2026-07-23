@@ -22,7 +22,16 @@ struct FoodRowView: View {
 
             Spacer(minLength: 8)
 
-            LevelBadge(level: food.level, compact: true)
+            VStack(alignment: .trailing, spacing: 5) {
+                LevelBadge(level: food.level, compact: true)
+                Text(food.portion)
+                    .font(.caption2.weight(.semibold))
+                    .foregroundStyle(.secondary)
+                    .lineLimit(1)
+                    .padding(.horizontal, 7)
+                    .padding(.vertical, 3)
+                    .background(Color(.secondarySystemBackground), in: RoundedRectangle(cornerRadius: 7))
+            }
         }
         .padding(.vertical, 4)
     }

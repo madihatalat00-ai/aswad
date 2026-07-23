@@ -10,6 +10,7 @@ struct FoodDetailView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
                 verdictCard
+                portionCallout
                 servingCard
                 if !food.fodmaps.isEmpty {
                     fodmapCard
@@ -60,6 +61,33 @@ struct FoodDetailView: View {
         .padding()
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(food.level.color.gradient, in: RoundedRectangle(cornerRadius: 16))
+    }
+
+    private var portionCallout: some View {
+        HStack {
+            Text("Safe serving")
+                .font(.caption.weight(.bold))
+                .textCase(.uppercase)
+                .foregroundStyle(.secondary)
+            Spacer()
+            Text(food.portion)
+                .font(.title3.weight(.heavy))
+                .foregroundStyle(.primary)
+                .multilineTextAlignment(.trailing)
+        }
+        .padding()
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color(.systemBackground), in: RoundedRectangle(cornerRadius: 16))
+        .overlay(
+            RoundedRectangle(cornerRadius: 16)
+                .stroke(Color(.separator).opacity(0.4), lineWidth: 1)
+        )
+        .overlay(alignment: .leading) {
+            Rectangle()
+                .fill(food.level.color)
+                .frame(width: 5)
+                .clipShape(RoundedRectangle(cornerRadius: 3))
+        }
     }
 
     private var servingCard: some View {

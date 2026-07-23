@@ -44,6 +44,22 @@
     </div>
   </section>
 
+  <!-- IBS-FRIENDLY TAB -->
+  <section id="tab-ibs" class="tab" data-tab="ibs" hidden>
+    <div class="ibs-intro">
+      <h2>IBS-Friendly foods</h2>
+      <p class="muted">Low-FODMAP foods you can eat, each with a safe serving amount.
+      🟡 foods are only gut-friendly within the portion shown — going over tips them high FODMAP.</p>
+    </div>
+    <div class="filters" id="ibsFilters" role="tablist" aria-label="Filter IBS-friendly foods">
+      <button class="chip is-on" data-ibs="all">All safe</button>
+      <button class="chip" data-ibs="low">🟢 Any serving</button>
+      <button class="chip" data-ibs="moderate">🟡 Watch portion</button>
+    </div>
+    <p class="result-count" id="ibsCount"></p>
+    <ul class="food-list" id="ibsList"></ul>
+  </section>
+
   <!-- CATEGORIES TAB -->
   <section id="tab-categories" class="tab" data-tab="categories" hidden>
     <ul class="category-list" id="categoryList"></ul>
@@ -114,8 +130,9 @@
   <!-- BOTTOM TAB BAR -->
   <nav class="tabbar" role="tablist">
     <button class="tabbtn is-on" data-target="search"><span>🔍</span>Search</button>
+    <button class="tabbtn" data-target="ibs"><span>🌱</span>IBS-Safe</button>
     <button class="tabbtn" data-target="categories"><span>▦</span>Categories</button>
-    <button class="tabbtn" data-target="favourites"><span>⭐️</span>Favourites</button>
+    <button class="tabbtn" data-target="favourites"><span>⭐️</span>Saved</button>
     <button class="tabbtn" data-target="about"><span>ⓘ</span>About</button>
   </nav>
 

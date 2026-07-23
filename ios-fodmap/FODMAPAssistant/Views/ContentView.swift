@@ -7,6 +7,9 @@ struct ContentView: View {
             SearchView()
                 .tabItem { Label("Search", systemImage: "magnifyingglass") }
 
+            IBSFriendlyView()
+                .tabItem { Label("IBS-Safe", systemImage: "leaf") }
+
             CategoriesView()
                 .tabItem { Label("Categories", systemImage: "square.grid.2x2") }
 
