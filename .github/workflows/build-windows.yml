@@ -1,0 +1,43 @@
+name: Build Windows installer
+
+# Builds the CaseFile Windows installer (.exe) on a Windows runner and
+# uploads it as a downloadable artifact. Run it from the Actions tab
+# ("Run workflow") or it runs automatically when the desktop app changes.
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - claude/legal-file-organization-yiomal
+    paths:
+      - "desktop/**"
+      - "casefile/**"
+      - ".github/workflows/build-windows.yml"
+
+jobs:
+  build:
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: desktop
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build installer
+        run: npm run dist
+
+      - name: Upload installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: CaseFile-Windows-Installer
+          path: desktop/dist/*.exe
+          if-no-files-found: error

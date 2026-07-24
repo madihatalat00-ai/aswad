@@ -1,0 +1,45 @@
+{
+  "name": "casefile-desktop",
+  "version": "1.0.0",
+  "description": "CaseFile — a private legal case & matter manager for Windows.",
+  "author": "CaseFile",
+  "license": "MIT",
+  "main": "main.js",
+  "scripts": {
+    "sync": "node copy-renderer.js",
+    "start": "npm run sync && electron .",
+    "dist": "npm run sync && electron-builder --win",
+    "dist:portable": "npm run sync && electron-builder --win portable"
+  },
+  "devDependencies": {
+    "electron": "^31.7.6",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.casefile.desktop",
+    "productName": "CaseFile",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "main.js",
+      "renderer/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "artifactName": "CaseFile-Setup-${version}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "CaseFile"
+    }
+  }
+}
