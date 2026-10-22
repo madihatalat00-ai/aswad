@@ -5,6 +5,9 @@ browser. Add tasks, set reminder times, and get a browser notification when
 something is due. All data is stored locally on your device — no accounts, no
 servers, no tracking.
 
+> **Also in this repo:** [🏠 House Build Ledger](house-tracker/), a tracker
+> for every amount you transfer while building your house.
+
 ## Features
 
 - **Add tasks** with a title, optional notes, priority (low / medium / high),

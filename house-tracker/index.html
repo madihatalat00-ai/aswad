@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Track every payment you make while building your house." />
+  <meta name="theme-color" content="#c2410c" />
+  <title>House Build Ledger</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏠</text></svg>" />
+</head>
+<body>
+  <div class="app">
+    <header class="app-header">
+      <div class="brand">
+        <span class="brand-icon" aria-hidden="true">🏠</span>
+        <div>
+          <h1 id="projectTitle">My House</h1>
+          <p class="tagline">Construction payment ledger</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button id="settingsBtn" class="btn btn-ghost" type="button" title="Project name, budget and currency">⚙️ <span class="hide-sm">Settings</span></button>
+        <button id="themeToggle" class="btn btn-ghost" type="button" title="Toggle light/dark theme" aria-label="Toggle theme">🌓</button>
+      </div>
+    </header>
+
+    <!-- Summary -->
+    <section class="summary" aria-label="Summary">
+      <article class="card card-hero">
+        <p class="card-label">Total transferred</p>
+        <p class="card-value" id="totalSpent">0</p>
+        <p class="card-sub" id="totalSub">No payments yet</p>
+      </article>
+      <article class="card">
+        <p class="card-label">Budget remaining</p>
+        <p class="card-value" id="budgetRemaining">—</p>
+        <div class="meter" id="budgetMeter" hidden>
+          <div class="meter-fill" id="budgetFill"></div>
+        </div>
+        <p class="card-sub" id="budgetSub"><button class="btn btn-link" type="button" data-open-settings>Set a budget</button></p>
+      </article>
+      <article class="card">
+        <p class="card-label">This month</p>
+        <p class="card-value" id="monthSpent">0</p>
+        <p class="card-sub" id="monthSub">&nbsp;</p>
+      </article>
+      <article class="card">
+        <p class="card-label">Biggest expense head</p>
+        <p class="card-value card-value-sm" id="topCategory">—</p>
+        <p class="card-sub" id="topCategorySub">&nbsp;</p>
+      </article>
+    </section>
+
+    <div class="add-bar">
+      <button id="addBtn" class="btn btn-primary btn-lg" type="button">＋ Add payment</button>
+    </div>
+
+    <div class="layout">
+      <!-- Breakdown -->
+      <section class="panel breakdown" aria-labelledby="breakdownTitle">
+        <div class="panel-head">
+          <h2 id="breakdownTitle">Where the money went</h2>
+        </div>
+        <div class="segmented" role="tablist" aria-label="Group by">
+          <button class="seg-btn is-active" type="button" role="tab" aria-selected="true" data-group="category">Category</button>
+          <button class="seg-btn" type="button" role="tab" aria-selected="false" data-group="payee">Paid to</button>
+          <button class="seg-btn" type="button" role="tab" aria-selected="false" data-group="month">Month</button>
+          <button class="seg-btn" type="button" role="tab" aria-selected="false" data-group="method">Method</button>
+        </div>
+        <ul id="breakdownList" class="bars"></ul>
+        <p id="breakdownEmpty" class="muted small">Your breakdown will appear once you add payments.</p>
+      </section>
+
+      <!-- Payments -->
+      <section class="panel payments" aria-labelledby="paymentsTitle">
+        <div class="panel-head">
+          <h2 id="paymentsTitle">Payments</h2>
+          <span id="filteredTotal" class="pill"></span>
+        </div>
+
+        <div class="filters">
+          <input id="searchInput" type="search" placeholder="Search payee, notes, reference…" aria-label="Search payments" />
+          <select id="categoryFilter" aria-label="Filter by category">
+            <option value="">All categories</option>
+          </select>
+          <select id="methodFilter" aria-label="Filter by payment method">
+            <option value="">All methods</option>
+          </select>
+          <label class="field-inline">From <input id="fromFilter" type="date" aria-label="From date" /></label>
+          <label class="field-inline">To <input id="toFilter" type="date" aria-label="To date" /></label>
+          <button id="clearFilters" class="btn btn-link" type="button" hidden>Clear filters</button>
+        </div>
+
+        <div id="paymentList" aria-live="polite"></div>
+        <div id="emptyState" class="empty-state" hidden>
+          <span class="empty-icon" aria-hidden="true">🧱</span>
+          <p id="emptyText">No payments yet. Tap <strong>Add payment</strong> to record your first transfer.</p>
+        </div>
+      </section>
+    </div>
+
+    <footer class="app-footer">
+      <div class="footer-actions">
+        <button id="exportCsv" class="btn btn-ghost" type="button" title="Download a spreadsheet of all payments">⬇️ Export CSV</button>
+        <button id="backupBtn" class="btn btn-ghost" type="button" title="Download a full backup file">💾 Backup</button>
+        <button id="restoreBtn" class="btn btn-ghost" type="button" title="Load payments from a backup file">📂 Restore</button>
+        <input id="restoreFile" type="file" accept="application/json,.json" hidden />
+      </div>
+      <p class="muted small">Saved only on this device. Take a backup now and then so you don't lose anything.</p>
+    </footer>
+  </div>
+
+  <!-- Add / edit payment -->
+  <dialog id="paymentDialog" class="dialog" aria-labelledby="paymentDialogTitle">
+    <form id="paymentForm" method="dialog" autocomplete="off" novalidate>
+      <header class="dialog-head">
+        <h2 id="paymentDialogTitle">Add payment</h2>
+        <button class="btn btn-ghost btn-icon" type="button" data-close aria-label="Close">✕</button>
+      </header>
+      <div class="dialog-body">
+        <label class="field field-amount">
+          <span class="field-label">Amount <span id="currencyHint" class="muted"></span></span>
+          <input id="amountInput" type="text" inputmode="decimal" placeholder="0" required aria-describedby="amountError" />
+          <span id="amountError" class="field-error" hidden>Enter an amount greater than zero.</span>
+        </label>
+        <div class="field-row">
+          <label class="field">
+            <span class="field-label">Date</span>
+            <input id="dateInput" type="date" required />
+          </label>
+          <label class="field">
+            <span class="field-label">Method</span>
+            <select id="methodInput"></select>
+          </label>
+        </div>
+        <label class="field">
+          <span class="field-label">Paid to</span>
+          <input id="payeeInput" type="text" list="payeeList" maxlength="120" placeholder="Contractor, supplier, shop…" />
+          <datalist id="payeeList"></datalist>
+        </label>
+        <label class="field">
+          <span class="field-label">Category</span>
+          <select id="categoryInput"></select>
+        </label>
+        <label class="field">
+          <span class="field-label">Reference / transaction ID <span class="muted">(optional)</span></span>
+          <input id="referenceInput" type="text" maxlength="80" placeholder="e.g. TRX 48213, cheque #0042" />
+        </label>
+        <label class="field">
+          <span class="field-label">Notes <span class="muted">(optional)</span></span>
+          <textarea id="notesInput" rows="2" maxlength="500" placeholder="What was it for? e.g. 200 bags cement, 2nd slab"></textarea>
+        </label>
+      </div>
+      <footer class="dialog-foot">
+        <button id="deleteInDialog" class="btn btn-danger-ghost" type="button" hidden>Delete</button>
+        <span class="spacer"></span>
+        <button class="btn btn-ghost" type="button" data-close>Cancel</button>
+        <button class="btn btn-primary" type="submit" id="savePayment">Save</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <!-- Settings -->
+  <dialog id="settingsDialog" class="dialog" aria-labelledby="settingsTitle">
+    <form id="settingsForm" method="dialog" autocomplete="off" novalidate>
+      <header class="dialog-head">
+        <h2 id="settingsTitle">Project settings</h2>
+        <button class="btn btn-ghost btn-icon" type="button" data-close aria-label="Close">✕</button>
+      </header>
+      <div class="dialog-body">
+        <label class="field">
+          <span class="field-label">Project name</span>
+          <input id="projectInput" type="text" maxlength="80" placeholder="My House" />
+        </label>
+        <label class="field">
+          <span class="field-label">Total budget <span class="muted">(optional)</span></span>
+          <input id="budgetInput" type="text" inputmode="decimal" placeholder="e.g. 2,50,00,000" />
+        </label>
+        <label class="field">
+          <span class="field-label">Currency</span>
+          <select id="currencyInput"></select>
+        </label>
+      </div>
+      <footer class="dialog-foot">
+        <span class="spacer"></span>
+        <button class="btn btn-ghost" type="button" data-close>Cancel</button>
+        <button class="btn btn-primary" type="submit">Save</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden>
+    <span id="toastText"></span>
+    <button id="toastAction" class="btn btn-link" type="button" hidden>Undo</button>
+  </div>
+
+  <script src="ledger.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
