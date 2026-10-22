@@ -44,6 +44,13 @@ app.
 > **Backup** every so often and keep the file somewhere safe (email it to
 > yourself or put it on Google Drive).
 
+## Using it on claude.ai
+
+The same files also run as a private claude.ai artifact. There, payments are
+saved to the artifact's database in your Claude account instead of the
+browser, so the ledger is the same on every device you sign in on. CSV export
+and backup ask before saving the file.
+
 ## Files
 
 | File             | Purpose                                                    |

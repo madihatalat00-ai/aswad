@@ -1,5 +1,7 @@
-/* House Build Ledger — UI layer.
- * Payments and settings live in localStorage; maths lives in ledger.js. */
+/* House Build Ledger — UI layer; maths lives in ledger.js.
+ * Opened as a plain page, payments and settings live in localStorage. Opened
+ * as a claude.ai artifact, they live in the artifact's database instead, so
+ * the ledger follows its owner across devices. */
 (function () {
   "use strict";
 
@@ -100,6 +102,10 @@
     toast: $("toast"),
     toastText: $("toastText"),
     toastAction: $("toastAction"),
+    storageNote: $("storageNote"),
+    confirmDialog: $("confirmDialog"),
+    confirmText: $("confirmText"),
+    confirmOk: $("confirmOk"),
   };
 
   // ---------- State ----------
@@ -110,6 +116,15 @@
   let toastTimer = null;
   let toastUndo = null;
   const filters = { query: "", category: "", method: "", from: "", to: "" };
+
+  // Artifact back end. `cloud` stays null in a plain browser, or when the
+  // viewer can't use the database (then localStorage is the fallback).
+  const host = globalThis.claude && typeof globalThis.claude.use === "function"
+    ? globalThis.claude
+    : null;
+  let cloud = null;
+  let downloads = null;
+  let loading = !!host;
 
   // ---------- Persistence ----------
   function readJSON(key) {
@@ -145,6 +160,7 @@
   }
 
   function save() {
+    if (cloud) return;
     try {
       localStorage.setItem(PAYMENTS_KEY, JSON.stringify(payments));
       localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
@@ -155,6 +171,84 @@
 
   function uid() {
     return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+  }
+
+  // ---------- Cloud persistence (artifact database) ----------
+  // Each write updates the local copy first and re-renders; the database
+  // snapshot that follows confirms it.
+  function cloudError(e) {
+    const code = e && e.code;
+    if (code === "invalid_argument") {
+      toast("You can view this ledger but not change it.");
+    } else if (code === "quota_exceeded") {
+      toast("Storage is full. Delete some old payments, then try again.");
+    } else {
+      toast("Couldn't save. Check your connection and try again.");
+    }
+  }
+
+  function writePayment(p) {
+    if (!cloud) return save();
+    cloud.doc("payments/" + p.id).set(Object.assign({}, p)).catch(cloudError);
+  }
+
+  function removePayment(id) {
+    if (!cloud) return save();
+    cloud.doc("payments/" + id).delete().catch(cloudError);
+  }
+
+  function writeSettings() {
+    if (!cloud) return save();
+    cloud.doc("settings/main").set(Object.assign({}, settings))
+      .catch(cloudError);
+  }
+
+  async function replaceAll(oldList, newList) {
+    if (!cloud) return save();
+    const keep = new Set(newList.map(function (p) {
+      return p.id;
+    }));
+    try {
+      for (const p of oldList) {
+        if (!keep.has(p.id)) await cloud.doc("payments/" + p.id).delete();
+      }
+      for (const p of newList) {
+        await cloud.doc("payments/" + p.id).set(Object.assign({}, p));
+      }
+      await cloud.doc("settings/main").set(Object.assign({}, settings));
+    } catch (e) {
+      cloudError(e);
+    }
+  }
+
+  function cloudLost() {
+    toast("Lost the connection to your saved ledger. Reload to reconnect.");
+  }
+
+  async function connectCloud() {
+    const caps = await Promise.all([host.use("db"), host.use("downloads")]);
+    downloads = caps[1];
+    if (!caps[0]) {
+      // Signed out or not granted: keep working from this browser's storage.
+      loading = false;
+      payments = loadPayments();
+      settings = loadSettings();
+      render();
+      return;
+    }
+    cloud = caps[0];
+    cloud.collection("payments").onSnapshot(function (snap) {
+      payments = snap.docs.map(function (d) {
+        return L.normalizePayment(Object.assign({}, d.data(), { id: d.id }));
+      }).filter(Boolean);
+      loading = false;
+      render();
+    }, cloudLost);
+    cloud.doc("settings/main").onSnapshot(function (snap) {
+      settings = L.normalizeSettings(snap.exists ? snap.data() : null);
+      if (!settings.currency) settings.currency = guessCurrency();
+      render();
+    }, cloudLost);
   }
 
   // ---------- Formatting ----------
@@ -217,6 +311,13 @@
     renderSummary();
     renderBreakdown();
     renderPayments();
+    if (cloud) {
+      els.storageNote.textContent =
+        "Saved to your Claude account, so it's there on any device you sign in on.";
+    } else if (!loading) {
+      els.storageNote.textContent =
+        "Saved only on this device. Take a backup now and then so you don't lose anything.";
+    }
   }
 
   function renderSummary() {
@@ -397,7 +498,9 @@
     els.empty.hidden = visible.length > 0;
     if (!visible.length) {
       els.emptyText.innerHTML = "";
-      if (payments.length) {
+      if (loading) {
+        els.emptyText.textContent = "Loading your payments…";
+      } else if (payments.length) {
         els.emptyText.textContent = "No payments match these filters.";
       } else {
         els.emptyText.append(
@@ -535,18 +638,20 @@
       notes: els.notes.value.trim(),
     };
 
+    let saved;
     if (editingId) {
       payments = payments.map(function (p) {
-        return p.id === editingId ? Object.assign({}, p, data) : p;
+        if (p.id !== editingId) return p;
+        saved = Object.assign({}, p, data);
+        return saved;
       });
       toast("Payment updated");
     } else {
-      payments.push(
-        Object.assign({ id: uid(), created: Date.now() }, data),
-      );
+      saved = Object.assign({ id: uid(), created: Date.now() }, data);
+      payments.push(saved);
       toast("Added " + money(amount) + (data.payee ? " to " + data.payee : ""));
     }
-    save();
+    if (saved) writePayment(saved);
     els.paymentDialog.close();
     render();
   }
@@ -558,11 +663,11 @@
     if (index === -1) return;
     const removed = payments[index];
     payments.splice(index, 1);
-    save();
+    removePayment(id);
     render();
     toast("Deleted " + money(removed.amount) + " payment", function () {
       payments.push(removed);
-      save();
+      writePayment(removed);
       render();
       toast("Payment restored");
     });
@@ -590,7 +695,7 @@
       budget: budget || 0,
       currency: els.currencyInput.value,
     };
-    save();
+    writeSettings();
     els.settingsDialog.close();
     render();
     toast("Settings saved");
@@ -598,6 +703,18 @@
 
   // ---------- Import / export ----------
   function download(filename, text, type) {
+    if (downloads) {
+      // Inside claude.ai the viewer confirms each save.
+      return downloads.save({ filename: filename, data: text }).then(
+        function () {
+          return true;
+        },
+        function (e) {
+          if (e && e.code !== "declined") toast("Couldn't save the file here.");
+          return false;
+        },
+      );
+    }
     const blob = new Blob([text], { type: type });
     const url = URL.createObjectURL(blob);
     const a = el("a");
@@ -609,6 +726,7 @@
     setTimeout(function () {
       URL.revokeObjectURL(url);
     }, 1000);
+    return Promise.resolve(true);
   }
 
   function fileStem() {
@@ -631,13 +749,30 @@
       fileStem() + ".json",
       L.makeBackup(payments, settings),
       "application/json",
-    );
-    toast("Backup downloaded");
+    ).then(function (ok) {
+      if (ok) toast("Backup saved");
+    });
+  }
+
+  // In-page replacement for confirm(), which claude.ai pages can't show.
+  function askConfirm(message, okLabel) {
+    return new Promise(function (resolve) {
+      els.confirmText.textContent = message;
+      els.confirmOk.textContent = okLabel;
+      const dlg = els.confirmDialog;
+      function done() {
+        dlg.removeEventListener("close", done);
+        resolve(dlg.returnValue === "ok");
+      }
+      dlg.returnValue = "";
+      dlg.addEventListener("close", done);
+      dlg.showModal();
+    });
   }
 
   function restore(file) {
     const reader = new FileReader();
-    reader.onload = function () {
+    reader.onload = async function () {
       let result;
       try {
         result = L.parseBackup(String(reader.result));
@@ -649,7 +784,7 @@
         " with " + plural(result.payments.length, "payment") +
         " from this backup?" +
         (result.skipped ? " (" + result.skipped + " invalid rows skipped)" : "");
-      if (payments.length && !confirm(msg)) return;
+      if (payments.length && !(await askConfirm(msg, "Replace"))) return;
       const before = { payments: payments, settings: settings };
       payments = result.payments;
       if (result.settings) {
@@ -657,12 +792,13 @@
           currency: result.settings.currency || settings.currency,
         });
       }
-      save();
+      replaceAll(before.payments, payments);
       render();
       toast("Restored " + plural(payments.length, "payment"), function () {
+        const restored = payments;
         payments = before.payments;
         settings = before.settings;
-        save();
+        replaceAll(restored, payments);
         render();
         toast("Restore undone");
       });
@@ -803,7 +939,7 @@
 
   // Keep tabs in sync if the ledger is open in two windows.
   globalThis.addEventListener("storage", function (e) {
-    if (e.key === PAYMENTS_KEY || e.key === SETTINGS_KEY) {
+    if (!cloud && (e.key === PAYMENTS_KEY || e.key === SETTINGS_KEY)) {
       payments = loadPayments();
       settings = loadSettings();
       render();
@@ -838,6 +974,14 @@
     els.currencyInput.appendChild(opt);
   }
 
-  initTheme();
-  render();
+  if (host) {
+    // claude.ai applies the viewer's own theme; don't fight it.
+    els.themeToggle.hidden = true;
+    payments = [];
+    render();
+    connectCloud();
+  } else {
+    initTheme();
+    render();
+  }
 })();

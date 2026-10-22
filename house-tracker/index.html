@@ -107,7 +107,7 @@
         <button id="restoreBtn" class="btn btn-ghost" type="button" title="Load payments from a backup file">📂 Restore</button>
         <input id="restoreFile" type="file" accept="application/json,.json" hidden />
       </div>
-      <p class="muted small">Saved only on this device. Take a backup now and then so you don't lose anything.</p>
+      <p id="storageNote" class="muted small"></p>
     </footer>
   </div>
 
@@ -186,6 +186,20 @@
         <span class="spacer"></span>
         <button class="btn btn-ghost" type="button" data-close>Cancel</button>
         <button class="btn btn-primary" type="submit">Save</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <!-- Confirmation (replaces window.confirm, which claude.ai pages can't show) -->
+  <dialog id="confirmDialog" class="dialog dialog-sm" aria-labelledby="confirmText">
+    <form method="dialog">
+      <div class="dialog-body">
+        <p id="confirmText" class="confirm-text"></p>
+      </div>
+      <footer class="dialog-foot">
+        <span class="spacer"></span>
+        <button class="btn btn-ghost" type="submit" value="cancel">Cancel</button>
+        <button id="confirmOk" class="btn btn-primary" type="submit" value="ok">OK</button>
       </footer>
     </form>
   </dialog>

@@ -109,3 +109,13 @@ Deno.test("parseBackup rejects non-backups with readable errors", () => {
   assertThrows(() => L.parseBackup("not json"), Error, "valid JSON");
   assertThrows(() => L.parseBackup('{"foo":1}'), Error, "No payments");
 });
+
+Deno.test("imported ids with unsafe characters are replaced", () => {
+  const ok = L.normalizePayment({ id: "abc-123", date: "2026-01-01", amount: 5 });
+  assertEquals(ok.id, "abc-123");
+  const bad = L.normalizePayment({ id: "a/b", date: "2026-01-01", amount: 5 });
+  assertEquals(bad.id === "a/b", false);
+  assertEquals(/^[a-z0-9]+$/.test(bad.id), true);
+  const dots = L.normalizePayment({ id: "..", date: "2026-01-01", amount: 5 });
+  assertEquals(dots.id === "..", false);
+});

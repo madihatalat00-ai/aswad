@@ -224,9 +224,13 @@
       ? Math.round(raw.amount * 100) / 100
       : parseAmount(raw.amount);
     if (!(amount > 0) || !isISODate(raw.date)) return null;
+    // Ids double as storage keys, so anything outside a safe charset is
+    // replaced with a fresh one.
+    const id = str(raw.id, 40);
     return {
-      id: str(raw.id, 40) ||
-        Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
+      id: /^[A-Za-z0-9_~:@+-][A-Za-z0-9_.~:@+-]*$/.test(id)
+        ? id
+        : Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
       date: raw.date,
       amount: amount,
       payee: str(raw.payee, 120),
