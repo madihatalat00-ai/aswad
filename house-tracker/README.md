@@ -28,7 +28,12 @@ It runs entirely in your browser and your data stays on your device.
 
 ## Getting started
 
-No build step. Open `index.html` in a browser, or serve the folder:
+**Easiest:** download `house-build-ledger.html` and open it (double-click on a
+computer, or tap it in your phone's Files app). It's a single file with
+everything built in, so it works anywhere, even offline.
+
+`index.html` also works, but only when `styles.css`, `ledger.js` and `app.js`
+sit next to it. Open it from a full copy of this folder, or serve the folder:
 
 ```bash
 cd house-tracker
@@ -60,6 +65,8 @@ and backup ask before saving the file.
 | `ledger.js`      | Pure money logic: totals, grouping, filters, CSV, backups  |
 | `app.js`         | UI, rendering, persistence                                 |
 | `ledger_test.js` | Deno tests for `ledger.js`                                 |
+| `house-build-ledger.html` | All of the above in one file (generated)          |
+| `build_standalone.py` | Regenerates `house-build-ledger.html`; run after edits |
 
 Totals are summed in whole cents, so you never see floating-point drift.
 
